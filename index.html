@@ -1166,23 +1166,23 @@
       });
     }
 
-    // Send email to lender using proper EmailJS method
+    // Send email to lender using EXACT template parameters
     async function sendEmailToLender(lender, clientName, attachments) {
       try {
         if (!emailjsInitialized) {
           throw new Error('EmailJS not initialized');
         }
 
-        // Prepare template parameters matching EXACTLY what the template expects
+        // Parameters matching EXACTLY what the EmailJS template expects
         const templateParams = {
-          to_email: lender.contact,
           cc_emails: lender.ccEmails.join(', '),
-          email: 'jmckevitt@flexibilitycapital.com', // Reply-To field
-          subject: `New Business Application - ${clientName}`,
-          message: `Please see attached documents for ${clientName}'s business loan application.`,
           lender_name: lender.name,
+          message: `Please see attached documents for ${clientName}'s business loan application.`,
           client_name: clientName,
-          submission_type: lender.type.toUpperCase()
+          submission_type: lender.type.toUpperCase(),
+          subject: `New Business Application - ${clientName}`,
+          email: 'jmckevitt@flexibilitycapital.com',
+          to_email: lender.contact
         };
 
         console.log(`📧 Sending email to ${lender.name}...`);
@@ -1214,10 +1214,8 @@
         }
 
         const templateParams = {
-          to_email: 'jmckevitt@flexibilitycapital.com',
           cc_emails: lender.ccEmails.join(', '),
-          email: 'jmckevitt@flexibilitycapital.com', // Reply-To field
-          subject: `Portal Submission Required - ${lender.name}`,
+          lender_name: lender.name,
           message: `Please submit ${clientName}'s application to ${lender.name} via their portal system.
 
 Portal Instructions: ${lender.contact}
@@ -1225,9 +1223,11 @@ Portal Instructions: ${lender.contact}
 Client: ${clientName}
 Lender: ${lender.name}
 Type: Portal Submission`,
-          lender_name: lender.name,
           client_name: clientName,
-          submission_type: 'PORTAL'
+          submission_type: 'PORTAL',
+          subject: `Portal Submission Required - ${lender.name}`,
+          email: 'jmckevitt@flexibilitycapital.com',
+          to_email: 'jmckevitt@flexibilitycapital.com'
         };
 
         console.log(`📋 Sending portal message for ${lender.name}...`);
@@ -1789,16 +1789,16 @@ Type: Portal Submission`,
             throw new Error('Please fill in all EmailJS configuration fields correctly.');
           }
           
-          // Simple test parameters matching our template EXACTLY
+          // Parameters matching EXACTLY what the template test shows
           const testParams = {
-            to_email: 'jmckevitt@flexibilitycapital.com',
             cc_emails: 'bshokrian@flexibilitycapital.com',
-            email: 'jmckevitt@flexibilitycapital.com', // Reply-To field that was missing!
-            subject: 'EmailJS Configuration Test - Peapod Calculator',
-            message: 'This is a test email to verify EmailJS configuration is working correctly from the Peapod Calculator tool.',
             lender_name: 'Test Lender',
+            message: 'This is a test email to verify EmailJS configuration is working correctly from the Peapod Calculator tool.',
             client_name: document.getElementById('clientName').value || 'Test Client',
-            submission_type: 'TEST'
+            submission_type: 'TEST',
+            subject: 'EmailJS Configuration Test - Peapod Calculator',
+            email: 'jmckevitt@flexibilitycapital.com',
+            to_email: 'jmckevitt@flexibilitycapital.com'
           };
           
           console.log('🧪 Sending test email with parameters:', testParams);
