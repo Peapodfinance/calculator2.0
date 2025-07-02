@@ -1789,19 +1789,14 @@ Type: Portal Submission`,
             throw new Error('Please fill in all EmailJS configuration fields correctly.');
           }
           
-          // Parameters matching EXACTLY what the template test shows
+          // Try the EXACT same approach as the EmailJS test popup
           const testParams = {
-            cc_emails: 'bshokrian@flexibilitycapital.com',
-            lender_name: 'Test Lender',
-            message: 'This is a test email to verify EmailJS configuration is working correctly from the Peapod Calculator tool.',
-            client_name: document.getElementById('clientName').value || 'Test Client',
-            submission_type: 'TEST',
-            subject: 'EmailJS Configuration Test - Peapod Calculator',
-            email: 'jmckevitt@flexibilitycapital.com',
             to_email: 'jmckevitt@flexibilitycapital.com'
           };
           
-          console.log('🧪 Sending test email with parameters:', testParams);
+          console.log('🧪 Sending minimal test email with parameters:', testParams);
+          console.log('Service ID:', emailConfig.serviceId);
+          console.log('Template ID:', emailConfig.templateId);
           
           const response = await emailjs.send(
             emailConfig.serviceId,
