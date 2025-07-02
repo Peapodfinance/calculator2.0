@@ -5,27 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Enhanced Peapod Calculator v2.0</title>
   
-  <!-- EmailJS SDK with fallback loading -->
-  <script>
-    // Manual EmailJS loader with fallback
-    (function() {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
-      script.onload = function() {
-        console.log('✅ EmailJS library loaded successfully');
-        window.emailjsLoaded = true;
-      };
-      script.onerror = function() {
-        console.error('❌ Failed to load EmailJS library');
-        window.emailjsLoaded = false;
-        // Show fallback message
-        setTimeout(() => {
-          alert('EmailJS library failed to load. You can still use the tool in simulation mode.');
-        }, 1000);
-      };
-      document.head.appendChild(script);
-    })();
+  <!-- EmailJS SDK - Latest Version -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    // Initialize EmailJS when the page loads
+    window.addEventListener('load', function() {
+      // EmailJS will be initialized when user enters their public key
+      console.log('📧 EmailJS SDK loaded successfully');
+    });
   </script>
   
   <style>
@@ -1106,7 +1093,7 @@
       clientName: ''
     };
 
-    // Initialize EmailJS
+    // Initialize EmailJS with proper method
     function initializeEmailJS() {
       const serviceId = document.getElementById('emailjsServiceId').value.trim();
       const templateId = document.getElementById('emailjsTemplateId').value.trim();
@@ -1121,19 +1108,21 @@
       emailConfig.publicKey = publicKey;
       
       try {
-        // Wait for EmailJS to load
-        if (typeof emailjs !== 'undefined' && emailjs.init) {
-          emailjs.init(publicKey);
-          emailjsInitialized = true;
-          console.log('✅ EmailJS initialized successfully');
-          return true;
-        } else if (window.emailjsLoaded === false) {
-          console.warn('⚠️ EmailJS library failed to load - using simulation mode');
+        // Check if EmailJS is available
+        if (typeof emailjs === 'undefined') {
+          console.error('❌ EmailJS library not loaded');
           return 'simulation';
-        } else {
-          console.warn('⚠️ EmailJS library not ready yet');
-          return false;
         }
+        
+        // Initialize EmailJS properly
+        emailjs.init({
+          publicKey: publicKey,
+        });
+        
+        emailjsInitialized = true;
+        console.log('✅ EmailJS initialized successfully');
+        return true;
+        
       } catch (error) {
         console.error('❌ EmailJS initialization failed:', error);
         return 'simulation';
@@ -1177,39 +1166,34 @@
       });
     }
 
-    // Send email to lender
+    // Send email to lender using proper EmailJS method
     async function sendEmailToLender(lender, clientName, attachments) {
       try {
         if (!emailjsInitialized) {
-          throw new Error('EmailJS not configured');
+          throw new Error('EmailJS not initialized');
         }
 
-        // Check if EmailJS is available
-        if (typeof emailjs === 'undefined') {
-          throw new Error('EmailJS library not loaded');
-        }
-
-        const emailParams = {
+        // Prepare template parameters according to EmailJS docs
+        const templateParams = {
           to_email: lender.contact,
           cc_emails: lender.ccEmails.join(', '),
-          from_name: 'Flexibility Capital',
           subject: `New Business Application - ${clientName}`,
           message: `Please see attached documents for ${clientName}'s business loan application.`,
           lender_name: lender.name,
           client_name: clientName,
-          submission_type: lender.type.toUpperCase(),
-          // Note: File attachments require EmailJS Pro plan
-          attachment_count: Object.keys(attachments).length
+          submission_type: lender.type.toUpperCase()
         };
 
         console.log(`📧 Sending email to ${lender.name}...`);
         console.log(`TO: ${lender.contact}`);
         console.log(`CC: ${lender.ccEmails.join(', ')}`);
+        console.log('Template Params:', templateParams);
         
+        // Send email using EmailJS
         const response = await emailjs.send(
           emailConfig.serviceId,
           emailConfig.templateId,
-          emailParams
+          templateParams
         );
         
         console.log(`✅ Email sent successfully to ${lender.name}:`, response);
@@ -1225,20 +1209,23 @@
     async function sendPortalMessage(lender, clientName) {
       try {
         if (!emailjsInitialized) {
-          throw new Error('EmailJS not configured');
+          throw new Error('EmailJS not initialized');
         }
 
-        const emailParams = {
+        const templateParams = {
           to_email: 'jmckevitt@flexibilitycapital.com',
           cc_emails: lender.ccEmails.join(', '),
-          from_name: 'Peapod Calculator',
-          from_email: 'jmckevitt@flexibilitycapital.com',
           subject: `Portal Submission Required - ${lender.name}`,
-          message: `Please submit ${clientName}'s application to ${lender.name} via their portal system.`,
+          message: `Please submit ${clientName}'s application to ${lender.name} via their portal system.
+
+Portal Instructions: ${lender.contact}
+
+Client: ${clientName}
+Lender: ${lender.name}
+Type: Portal Submission`,
           lender_name: lender.name,
           client_name: clientName,
-          submission_type: 'PORTAL',
-          portal_instructions: lender.contact
+          submission_type: 'PORTAL'
         };
 
         console.log(`📋 Sending portal message for ${lender.name}...`);
@@ -1246,7 +1233,7 @@
         const response = await emailjs.send(
           emailConfig.serviceId,
           emailConfig.templateId,
-          emailParams
+          templateParams
         );
         
         console.log(`✅ Portal message sent for ${lender.name}:`, response);
@@ -1783,40 +1770,35 @@
         }
       });
       
-      // Test email configuration with better error handling
+      // Test email configuration - simplified and improved
       document.getElementById('testEmailConfig').addEventListener('click', async function() {
         const originalText = this.textContent;
         this.disabled = true;
         this.textContent = 'Testing...';
         
         try {
-          // Wait a moment for EmailJS to load
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          
           const initResult = initializeEmailJS();
           
-          if (initResult === 'simulation' || initResult === false) {
-            throw new Error('EmailJS library not available. Try refreshing the page or check your internet connection.');
+          if (initResult === 'simulation') {
+            throw new Error('EmailJS library not available. Please refresh the page and try again.');
           }
 
           if (!initResult) {
-            throw new Error('Please fill in all EmailJS configuration fields');
+            throw new Error('Please fill in all EmailJS configuration fields correctly.');
           }
           
+          // Simple test parameters matching our template
           const testParams = {
             to_email: 'jmckevitt@flexibilitycapital.com',
             cc_emails: 'bshokrian@flexibilitycapital.com',
-            subject: 'EmailJS Configuration Test',
-            message: 'This is a test email to verify EmailJS configuration is working correctly.',
+            subject: 'EmailJS Configuration Test - Peapod Calculator',
+            message: 'This is a test email to verify EmailJS configuration is working correctly from the Peapod Calculator tool.',
             lender_name: 'Test Lender',
-            client_name: 'Test Client',
+            client_name: document.getElementById('clientName').value || 'Test Client',
             submission_type: 'TEST'
           };
           
-          console.log('🧪 Sending test email...');
-          console.log('Service ID:', emailConfig.serviceId);
-          console.log('Template ID:', emailConfig.templateId);
-          console.log('Parameters:', testParams);
+          console.log('🧪 Sending test email with parameters:', testParams);
           
           const response = await emailjs.send(
             emailConfig.serviceId,
@@ -1824,12 +1806,12 @@
             testParams
           );
           
-          alert('✅ Test email sent successfully! Check your inbox.');
+          alert('✅ Test email sent successfully! Check your inbox at jmckevitt@flexibilitycapital.com');
           console.log('✅ Test email response:', response);
           
         } catch (error) {
           const errorMsg = error.message || 'Unknown error occurred';
-          alert(`❌ Test failed: ${errorMsg}\n\nThe tool will work in simulation mode. Check console for details.`);
+          alert(`❌ Test failed: ${errorMsg}\n\nPlease check:\n1. All fields are filled correctly\n2. EmailJS service is active\n3. Template exists and is saved`);
           console.error('❌ Test email error:', error);
         } finally {
           this.disabled = false;
