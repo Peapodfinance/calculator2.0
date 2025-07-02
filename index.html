@@ -1173,10 +1173,11 @@
           throw new Error('EmailJS not initialized');
         }
 
-        // Prepare template parameters according to EmailJS docs
+        // Prepare template parameters matching EXACTLY what the template expects
         const templateParams = {
           to_email: lender.contact,
           cc_emails: lender.ccEmails.join(', '),
+          email: 'jmckevitt@flexibilitycapital.com', // Reply-To field
           subject: `New Business Application - ${clientName}`,
           message: `Please see attached documents for ${clientName}'s business loan application.`,
           lender_name: lender.name,
@@ -1215,6 +1216,7 @@
         const templateParams = {
           to_email: 'jmckevitt@flexibilitycapital.com',
           cc_emails: lender.ccEmails.join(', '),
+          email: 'jmckevitt@flexibilitycapital.com', // Reply-To field
           subject: `Portal Submission Required - ${lender.name}`,
           message: `Please submit ${clientName}'s application to ${lender.name} via their portal system.
 
@@ -1787,10 +1789,11 @@ Type: Portal Submission`,
             throw new Error('Please fill in all EmailJS configuration fields correctly.');
           }
           
-          // Simple test parameters matching our template
+          // Simple test parameters matching our template EXACTLY
           const testParams = {
             to_email: 'jmckevitt@flexibilitycapital.com',
             cc_emails: 'bshokrian@flexibilitycapital.com',
+            email: 'jmckevitt@flexibilitycapital.com', // Reply-To field that was missing!
             subject: 'EmailJS Configuration Test - Peapod Calculator',
             message: 'This is a test email to verify EmailJS configuration is working correctly from the Peapod Calculator tool.',
             lender_name: 'Test Lender',
