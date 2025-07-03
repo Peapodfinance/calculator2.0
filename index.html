@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Enhanced Peapod Calculator v2.0</title>
   
-  <!-- EmailJS SDK - Latest Version -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <!-- EmailJS SDK - Try v3 instead of v4 -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script type="text/javascript">
-    // Initialize EmailJS when the page loads
+    // Initialize EmailJS when the page loads - v3 style
     window.addEventListener('load', function() {
-      // EmailJS will be initialized when user enters their public key
-      console.log('📧 EmailJS SDK loaded successfully');
+      console.log('📧 EmailJS v3 SDK loaded');
     });
   </script>
   
@@ -1093,7 +1092,7 @@
       clientName: ''
     };
 
-    // Initialize EmailJS with proper method
+    // Initialize EmailJS using v3 method
     function initializeEmailJS() {
       const serviceId = document.getElementById('emailjsServiceId').value.trim();
       const templateId = document.getElementById('emailjsTemplateId').value.trim();
@@ -1114,13 +1113,11 @@
           return 'simulation';
         }
         
-        // Initialize EmailJS properly
-        emailjs.init({
-          publicKey: publicKey,
-        });
+        // Initialize EmailJS v3 style
+        emailjs.init(publicKey);
         
         emailjsInitialized = true;
-        console.log('✅ EmailJS initialized successfully');
+        console.log('✅ EmailJS v3 initialized successfully');
         return true;
         
       } catch (error) {
@@ -1190,7 +1187,7 @@
         console.log(`CC: ${lender.ccEmails.join(', ')}`);
         console.log('Template Params:', templateParams);
         
-        // Send email using EmailJS
+        // Send email using EmailJS v3 method
         const response = await emailjs.send(
           emailConfig.serviceId,
           emailConfig.templateId,
@@ -1794,10 +1791,12 @@ Type: Portal Submission`,
             to_email: 'jmckevitt@flexibilitycapital.com'
           };
           
-          console.log('🧪 Sending minimal test email with parameters:', testParams);
+          console.log('🧪 Using EmailJS v3 send method...');
           console.log('Service ID:', emailConfig.serviceId);
           console.log('Template ID:', emailConfig.templateId);
+          console.log('Parameters:', testParams);
           
+          // Use EmailJS v3 method (no options parameter)
           const response = await emailjs.send(
             emailConfig.serviceId,
             emailConfig.templateId,
