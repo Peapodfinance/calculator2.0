@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Enhanced Peapod Calculator v2.0</title>
   
-  <!-- EmailJS SDK - Try v3 instead of v4 -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <!-- Brevo API Integration - No external SDK needed -->
   <script type="text/javascript">
-    // Initialize EmailJS when the page loads - v3 style
     window.addEventListener('load', function() {
-      console.log('📧 EmailJS v3 SDK loaded');
+      console.log('📧 Brevo API integration loaded');
     });
   </script>
   
@@ -564,35 +562,35 @@
       <span class="version-badge">v2.0 - With Real Email Sending</span>
     </div>
 
-    <!-- EmailJS Configuration Panel -->
-    <div class="card" style="grid-column: 1 / -1; margin-bottom: 20px; border: 2px solid #ffc107;">
-      <h2 style="color: #856404;">⚙️ Email Configuration</h2>
-      <div style="background: rgba(255, 193, 7, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-        <p><strong>📧 Setup Required:</strong> To send real emails, configure your EmailJS credentials below.</p>
+    <!-- Brevo Configuration Panel -->
+    <div class="card" style="grid-column: 1 / -1; margin-bottom: 20px; border: 2px solid #0d7377;">
+      <h2 style="color: #0d7377;">📧 Brevo Email Configuration</h2>
+      <div style="background: rgba(13, 115, 119, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+        <p><strong>✅ Brevo Integration Active:</strong> Emails will be sent with real PDF attachments!</p>
         <p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
-          Get these from your <a href="https://emailjs.com" target="_blank">EmailJS Dashboard</a> → Integration → Browser
+          Using your company's Brevo account for professional email delivery.
         </p>
       </div>
       <div class="form-grid">
         <div class="form-group">
-          <label for="emailjsServiceId">EmailJS Service ID</label>
-          <input type="text" id="emailjsServiceId" placeholder="service_xxxxxxx">
+          <label for="brevoApiKey">Brevo API Key</label>
+          <input type="password" id="brevoApiKey" value="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" readonly>
         </div>
         <div class="form-group">
-          <label for="emailjsTemplateId">EmailJS Template ID</label>
-          <input type="text" id="emailjsTemplateId" placeholder="template_xxxxxxx">
+          <label for="senderEmail">Sender Email</label>
+          <input type="email" id="senderEmail" value="jmckevitt@flexibilitycapital.com" required>
         </div>
         <div class="form-group">
-          <label for="emailjsPublicKey">EmailJS Public Key</label>
-          <input type="text" id="emailjsPublicKey" placeholder="xxxxxxxxxxxx">
+          <label for="senderName">Sender Name</label>
+          <input type="text" id="senderName" value="Flexibility Capital" required>
         </div>
         <div class="form-group">
           <label for="clientName">Client Name (for emails)</label>
           <input type="text" id="clientName" placeholder="John Smith" required>
         </div>
       </div>
-      <button type="button" id="testEmailConfig" class="submit-btn" style="background: linear-gradient(135deg, #17a2b8, #138496);">
-        🧪 Test Email Configuration
+      <button type="button" id="testBrevoConfig" class="submit-btn" style="background: linear-gradient(135deg, #0d7377, #14a85f);">
+        🧪 Test Brevo Configuration
       </button>
     </div>
 
@@ -821,7 +819,7 @@
         active: true,
         criteria: { personalCredit: 625, monthlyRevenue: 15000, deposits: 5, nsfs: 3, avgBalance: 1000, monthsBusiness: 24 }, 
         restrictedIndustries: ["Adult Entertainment", "Art Dealer", "Auto Sales", "Bail-Bonds", "Birth Tourism", "Boat Sales", "Brokers", "Marijuana/CBD", "Casino/ Gambling", "Cell Phone Stores", "Gold Dealers", "Gun Sales", "Horoscope/ Fortune Telling", "Money Services Businesses", "Multi-Level Marketing Sales", "Non-Profit", "Outdoor Power Equipment Stores", "Pawn Shops", "Private Households", "Religious/Civic Organizations", "RV Dealer"],
-        restrictedStates: ["North Dakota", "Nevada"]
+        restrictedStates: []
       },
       { 
         name: "Credibly", 
@@ -865,7 +863,7 @@
         active: true,
         criteria: { personalCredit: 600, monthlyRevenue: 5000, deposits: 1, nsfs: 3, avgBalance: 500, monthsBusiness: 6 }, 
         restrictedIndustries: ["Adult Entertainment", "Art Dealer", "Auto Sales", "Bail-Bonds", "Birth Tourism", "Boat Sales", "Brokers", "Marijuana/CBD", "Casino/ Gambling", "Cell Phone Stores", "Gold Dealers", "Gun Sales", "Horoscope/ Fortune Telling", "Money Services Businesses", "Multi-Level Marketing Sales", "Non-Profit", "Outdoor Power Equipment Stores", "Pawn Shops", "Private Households", "Religious/Civic Organizations", "RV Dealer"],
-        restrictedStates: ["Montana", "North Dakota", "Nevada", "Rhode Island", "South Dakota", "Vermont"]
+        restrictedStates: []
       },
       { 
         name: "Rapid Finance", 
@@ -876,7 +874,7 @@
         active: true,
         criteria: { personalCredit: 600, monthlyRevenue: 10000, deposits: 3, nsfs: 5, avgBalance: 1000, monthsBusiness: 24 }, 
         restrictedIndustries: ["Adult Entertainment", "Auto Sales", "Bail-Bonds", "Casino/ Gambling", "Collections", "Finance/Investment/Banks", "Gun Sales", "Influencers", "Law Firms", "Marijuana/CBD", "Multi-Level Marketing Sales", "Nightclub", "Non-Profit", "Real Estate", "Religious/Civic Organizations", "Trucking", "Transportation", "Vape Shop", "Property Management"],
-        restrictedStates: ["New Jersey", "Montana", "Nevada", "Rhode Island", "Vermont", "North Dakota", "South Dakota"]
+        restrictedStates: []
       },
       { 
         name: "eFinancial Tree", 
@@ -1008,7 +1006,7 @@
         active: true,
         criteria: { personalCredit: 450, monthlyRevenue: 1000, deposits: 1, nsfs: 10, avgBalance: 500, monthsBusiness: 1 }, 
         restrictedIndustries: ["Finance/Investment/Banks", "Medical/Healthcare"],
-        restrictedStates: ["California"]
+        restrictedStates: []
       },
       { 
         name: "BITTY", 
@@ -1163,39 +1161,73 @@
       });
     }
 
-    // Send email to lender using EXACT template parameters
+    // Send email to lender via Brevo with REAL attachments
     async function sendEmailToLender(lender, clientName, attachments) {
       try {
-        if (!emailjsInitialized) {
-          throw new Error('EmailJS not initialized');
+        if (!brevoInitialized) {
+          throw new Error('Brevo not initialized');
         }
 
-        // Parameters matching EXACTLY what the EmailJS template expects
-        const templateParams = {
-          cc_emails: lender.ccEmails.join(', '),
-          lender_name: lender.name,
-          message: `Please see attached documents for ${clientName}'s business loan application.`,
-          client_name: clientName,
-          submission_type: lender.type.toUpperCase(),
-          subject: `New Business Application - ${clientName}`,
-          email: 'jmckevitt@flexibilitycapital.com',
-          to_email: lender.contact
-        };
+        // Prepare attachments for Brevo
+        const brevoAttachments = [];
+        for (const [key, file] of Object.entries(uploadedFiles)) {
+          try {
+            const base64Content = await fileToBase64(file);
+            let fileName = file.name;
+            
+            // Add descriptive names
+            if (key === 'application') {
+              fileName = `Business_Application_${clientName.replace(/\s+/g, '_')}.pdf`;
+            } else {
+              fileName = `Bank_Statement_Month_${key}_${clientName.replace(/\s+/g, '_')}.pdf`;
+            }
+            
+            brevoAttachments.push({
+              content: base64Content,
+              name: fileName
+            });
+          } catch (error) {
+            console.error(`Error processing file ${key}:`, error);
+          }
+        }
 
-        console.log(`📧 Sending email to ${lender.name}...`);
-        console.log(`TO: ${lender.contact}`);
-        console.log(`CC: ${lender.ccEmails.join(', ')}`);
-        console.log('Template Params:', templateParams);
-        
-        // Send email using EmailJS v3 method
-        const response = await emailjs.send(
-          emailConfig.serviceId,
-          emailConfig.templateId,
-          templateParams
+        const htmlContent = `
+          <h3>New Business Loan Application - ${clientName}</h3>
+          
+          <p>Dear ${lender.name},</p>
+          
+          <p>Please find attached the complete business loan application for <strong>${clientName}</strong>.</p>
+          
+          <h4>Application Details:</h4>
+          <ul>
+            <li><strong>Client Name:</strong> ${clientName}</li>
+            <li><strong>Submission Type:</strong> ${lender.type.toUpperCase()}</li>
+            <li><strong>Documents Attached:</strong> ${brevoAttachments.length} files</li>
+          </ul>
+          
+          <h4>Attached Documents:</h4>
+          <ul>
+            ${brevoAttachments.map(att => `<li>${att.name}</li>`).join('')}
+          </ul>
+          
+          <p>Please review the application and let us know if you need any additional information.</p>
+          
+          <p>Best regards,<br>
+          <strong>Flexibility Capital Team</strong><br>
+          ${brevoConfig.senderEmail}</p>
+        `;
+
+        console.log(`📧 Sending to ${lender.name} with ${brevoAttachments.length} attachments...`);
+
+        const result = await sendBrevoEmail(
+          lender.contact,
+          lender.ccEmails,
+          `New Business Application - ${clientName}`,
+          htmlContent,
+          brevoAttachments
         );
-        
-        console.log(`✅ Email sent successfully to ${lender.name}:`, response);
-        return { success: true, response };
+
+        return result;
         
       } catch (error) {
         console.error(`❌ Failed to send email to ${lender.name}:`, error);
@@ -1203,40 +1235,44 @@
       }
     }
 
-    // Send internal message for portal lenders
+    // Send internal message for portal lenders via Brevo
     async function sendPortalMessage(lender, clientName) {
       try {
-        if (!emailjsInitialized) {
-          throw new Error('EmailJS not initialized');
+        if (!brevoInitialized) {
+          throw new Error('Brevo not initialized');
         }
 
-        const templateParams = {
-          cc_emails: lender.ccEmails.join(', '),
-          lender_name: lender.name,
-          message: `Please submit ${clientName}'s application to ${lender.name} via their portal system.
-
-Portal Instructions: ${lender.contact}
-
-Client: ${clientName}
-Lender: ${lender.name}
-Type: Portal Submission`,
-          client_name: clientName,
-          submission_type: 'PORTAL',
-          subject: `Portal Submission Required - ${lender.name}`,
-          email: 'jmckevitt@flexibilitycapital.com',
-          to_email: 'jmckevitt@flexibilitycapital.com'
-        };
+        const htmlContent = `
+          <h3>Portal Submission Required - ${lender.name}</h3>
+          
+          <p>Please submit <strong>${clientName}'s</strong> application to <strong>${lender.name}</strong> via their portal system.</p>
+          
+          <h4>Portal Instructions:</h4>
+          <p>${lender.contact}</p>
+          
+          <h4>Client Details:</h4>
+          <ul>
+            <li><strong>Client Name:</strong> ${clientName}</li>
+            <li><strong>Lender:</strong> ${lender.name}</li>
+            <li><strong>Submission Type:</strong> Portal</li>
+          </ul>
+          
+          <p>The client documents have been uploaded and are ready for manual portal submission.</p>
+          
+          <p>Best regards,<br>
+          <strong>Peapod Calculator System</strong></p>
+        `;
 
         console.log(`📋 Sending portal message for ${lender.name}...`);
         
-        const response = await emailjs.send(
-          emailConfig.serviceId,
-          emailConfig.templateId,
-          templateParams
+        const result = await sendBrevoEmail(
+          'jmckevitt@flexibilitycapital.com',
+          lender.ccEmails,
+          `Portal Submission Required - ${lender.name}`,
+          htmlContent
         );
-        
-        console.log(`✅ Portal message sent for ${lender.name}:`, response);
-        return { success: true, response };
+
+        return result;
         
       } catch (error) {
         console.error(`❌ Failed to send portal message for ${lender.name}:`, error);
@@ -1244,7 +1280,7 @@ Type: Portal Submission`,
       }
     }
 
-    // Process all submissions with fallback
+    // Process all submissions using Brevo
     async function processSubmissions(lendersToSubmit) {
       const clientName = document.getElementById('clientName').value.trim();
       
@@ -1253,27 +1289,14 @@ Type: Portal Submission`,
         return false;
       }
 
-      const initResult = initializeEmailJS();
-      
-      // If EmailJS failed to load, use simulation mode
-      if (initResult === 'simulation' || initResult === false) {
-        alert('⚠️ EmailJS not available - running in simulation mode. Check console for details.');
-        document.getElementById('submissionStatus').classList.add('active');
-        const statusList = document.getElementById('statusList');
-        statusList.innerHTML = '';
-        return simulateEmailSending(lendersToSubmit, clientName);
+      if (!initializeBrevo()) {
+        alert('Please check your Brevo configuration.');
+        return false;
       }
 
-      // Real email sending mode
       const statusList = document.getElementById('statusList');
       statusList.innerHTML = '';
       
-      // Prepare attachments (note: requires EmailJS Pro for actual file attachments)
-      const attachments = {};
-      for (const [key, file] of Object.entries(uploadedFiles)) {
-        attachments[key] = file.name; // Just store filename for now
-      }
-
       let successCount = 0;
       let failCount = 0;
 
@@ -1289,10 +1312,10 @@ Type: Portal Submission`,
         `;
         statusList.appendChild(statusItem);
 
-        // Send email or portal message
+        // Send email or portal message via Brevo
         let result;
         if (lender.type === 'email') {
-          result = await sendEmailToLender(lender, clientName, attachments);
+          result = await sendEmailToLender(lender, clientName, uploadedFiles);
         } else {
           result = await sendPortalMessage(lender, clientName);
         }
@@ -1300,7 +1323,7 @@ Type: Portal Submission`,
         // Update status
         const statusBadge = statusItem.querySelector('.status-badge');
         if (result.success) {
-          statusBadge.textContent = 'SENT';
+          statusBadge.textContent = 'SENT ✓';
           statusBadge.className = 'status-badge status-sent';
           successCount++;
         } else {
@@ -1319,7 +1342,7 @@ Type: Portal Submission`,
       if (failCount > 0) {
         alert(`Submission completed with ${failCount} failures. Check console for details.`);
       } else {
-        alert(`All ${successCount} submissions sent successfully!`);
+        alert(`🎉 All ${successCount} submissions sent successfully with PDF attachments!`);
       }
 
       return true;
@@ -1769,47 +1792,58 @@ Type: Portal Submission`,
         }
       });
       
-      // Test email configuration - simplified and improved
-      document.getElementById('testEmailConfig').addEventListener('click', async function() {
+      // Test Brevo configuration
+      document.getElementById('testBrevoConfig').addEventListener('click', async function() {
         const originalText = this.textContent;
         this.disabled = true;
         this.textContent = 'Testing...';
         
         try {
-          const initResult = initializeEmailJS();
-          
-          if (initResult === 'simulation') {
-            throw new Error('EmailJS library not available. Please refresh the page and try again.');
-          }
-
-          if (!initResult) {
-            throw new Error('Please fill in all EmailJS configuration fields correctly.');
+          if (!initializeBrevo()) {
+            throw new Error('Please fill in all Brevo configuration fields correctly.');
           }
           
-          // Try the EXACT same approach as the EmailJS test popup
-          const testParams = {
-            to_email: 'jmckevitt@flexibilitycapital.com'
-          };
+          const clientName = document.getElementById('clientName').value || 'Test Client';
           
-          console.log('🧪 Using EmailJS v3 send method...');
-          console.log('Service ID:', emailConfig.serviceId);
-          console.log('Template ID:', emailConfig.templateId);
-          console.log('Parameters:', testParams);
+          const htmlContent = `
+            <h3>Brevo Configuration Test - Peapod Calculator</h3>
+            
+            <p>This is a test email to verify Brevo integration is working correctly.</p>
+            
+            <h4>Test Details:</h4>
+            <ul>
+              <li><strong>Client:</strong> ${clientName}</li>
+              <li><strong>Sender:</strong> ${brevoConfig.senderEmail}</li>
+              <li><strong>System:</strong> Peapod Calculator v2.0</li>
+              <li><strong>Date:</strong> ${new Date().toLocaleString()}</li>
+            </ul>
+            
+            <p>If you receive this email, the Brevo integration is working perfectly!</p>
+            
+            <p>Best regards,<br>
+            <strong>Peapod Calculator System</strong></p>
+          `;
           
-          // Use EmailJS v3 method (no options parameter)
-          const response = await emailjs.send(
-            emailConfig.serviceId,
-            emailConfig.templateId,
-            testParams
+          console.log('🧪 Sending Brevo test email...');
+          
+          const result = await sendBrevoEmail(
+            'jmckevitt@flexibilitycapital.com',
+            ['bshokrian@flexibilitycapital.com'],
+            'Brevo Test - Peapod Calculator',
+            htmlContent
           );
           
-          alert('✅ Test email sent successfully! Check your inbox at jmckevitt@flexibilitycapital.com');
-          console.log('✅ Test email response:', response);
+          if (result.success) {
+            alert('✅ Test email sent successfully via Brevo! Check your inbox at jmckevitt@flexibilitycapital.com');
+            console.log('✅ Brevo test successful:', result);
+          } else {
+            throw new Error(result.error);
+          }
           
         } catch (error) {
           const errorMsg = error.message || 'Unknown error occurred';
-          alert(`❌ Test failed: ${errorMsg}\n\nPlease check:\n1. All fields are filled correctly\n2. EmailJS service is active\n3. Template exists and is saved`);
-          console.error('❌ Test email error:', error);
+          alert(`❌ Test failed: ${errorMsg}\n\nPlease check your Brevo API key and configuration.`);
+          console.error('❌ Brevo test error:', error);
         } finally {
           this.disabled = false;
           this.textContent = originalText;
