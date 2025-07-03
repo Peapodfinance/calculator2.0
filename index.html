@@ -1289,10 +1289,20 @@
         return false;
       }
 
-      if (!initializeBrevo()) {
+      // Manual check instead of initializeBrevo()
+      const apiKey = document.getElementById('brevoApiKey').value.trim();
+      const senderEmail = document.getElementById('senderEmail').value.trim();
+      const senderName = document.getElementById('senderName').value.trim();
+      
+      if (!apiKey || !senderEmail || !senderName) {
         alert('Please check your Brevo configuration.');
         return false;
       }
+      
+      // Update config
+      brevoConfig.apiKey = apiKey;
+      brevoConfig.senderEmail = senderEmail;
+      brevoConfig.senderName = senderName;
 
       const statusList = document.getElementById('statusList');
       statusList.innerHTML = '';
@@ -1785,6 +1795,10 @@
       initializeDropdowns();
       initializeFileHandlers();
       
+      // Auto-initialize Brevo with default values
+      brevoInitialized = true;
+      console.log('✅ Brevo auto-initialized with default configuration');
+      
       // Reset button handler
       document.getElementById('resetCalculator').addEventListener('click', function() {
         if (confirm('Are you sure you want to reset the calculator? This will clear all entered data and uploaded files.')) {
@@ -1799,9 +1813,19 @@
         this.textContent = 'Testing...';
         
         try {
-          if (!initializeBrevo()) {
+          // Manual check instead of initializeBrevo()
+          const apiKey = document.getElementById('brevoApiKey').value.trim();
+          const senderEmail = document.getElementById('senderEmail').value.trim();
+          const senderName = document.getElementById('senderName').value.trim();
+          
+          if (!apiKey || !senderEmail || !senderName) {
             throw new Error('Please fill in all Brevo configuration fields correctly.');
           }
+          
+          // Update config
+          brevoConfig.apiKey = apiKey;
+          brevoConfig.senderEmail = senderEmail;
+          brevoConfig.senderName = senderName;
           
           const clientName = document.getElementById('clientName').value || 'Test Client';
           
