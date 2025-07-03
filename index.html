@@ -786,7 +786,18 @@
   </div>
 
   <script>
-    // Enhanced lender data with tier, contact info, and status
+    // Global variables for Brevo - declare at the very top
+    let approvedLenders = [];
+    let uploadedFiles = {};
+    let selectedLenders = [];
+    let brevoInitialized = false;
+
+    // Brevo Configuration - declare globally
+    const brevoConfig = {
+      apiKey: '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',
+      senderEmail: 'jmckevitt@flexibilitycapital.com',
+      senderName: 'Flexibility Capital'
+    };
     const lenders = [
       { 
         name: "IDEA FINANCIAL", 
