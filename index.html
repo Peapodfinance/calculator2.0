@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Enhanced Peapod Calculator v2.0</title>
   
+  <!-- Brevo API Integration - No external SDK needed -->
+  <script type="text/javascript">
+    window.addEventListener('load', function() {
+      console.log('ðŸ“§ Brevo API integration loaded');
+    });
+  </script>
+  
   <style>
     * {
       margin: 0;
@@ -85,7 +92,7 @@
     }
 
     .form-container h2::before {
-      content: "📋";
+      content: "ðŸ“‹";
       font-size: 1.5rem;
     }
 
@@ -179,7 +186,7 @@
     }
 
     .upload-section h3::before {
-      content: "📄";
+      content: "ðŸ“„";
       font-size: 1.2rem;
     }
 
@@ -192,6 +199,12 @@
       margin-bottom: 10px;
       color: #333;
       font-weight: 600;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
     }
 
     .file-input {
@@ -234,7 +247,7 @@
     }
 
     .results-container h2::before {
-      content: "🏦";
+      content: "ðŸ¦";
       font-size: 1.5rem;
     }
 
@@ -490,7 +503,7 @@
     }
 
     .empty-state::before {
-      content: "🟢";
+      content: "ðŸŸ¢";
       display: block;
       font-size: 3rem;
       margin-bottom: 15px;
@@ -525,6 +538,20 @@
         gap: 10px;
       }
     }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -532,14 +559,14 @@
     <div class="header">
       <h1>Enhanced Peapod Calculator</h1>
       <p>Advanced Business Lending Qualification & Submission Tool</p>
-      <span class="version-badge">v2.0 - With Brevo Email Sending</span>
+      <span class="version-badge">v2.0 - With Real Email Sending</span>
     </div>
 
     <!-- Brevo Configuration Panel -->
     <div class="card" style="grid-column: 1 / -1; margin-bottom: 20px; border: 2px solid #0d7377;">
-      <h2 style="color: #0d7377;">📧 Brevo Email Configuration</h2>
+      <h2 style="color: #0d7377;">ðŸ“§ Brevo Email Configuration</h2>
       <div style="background: rgba(13, 115, 119, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-        <p><strong>✅ Brevo Integration Active:</strong> Emails will be sent with real PDF attachments!</p>
+        <p><strong>âœ… Brevo Integration Active:</strong> Emails will be sent with real PDF attachments!</p>
         <p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
           Using your company's Brevo account for professional email delivery.
         </p>
@@ -547,7 +574,7 @@
       <div class="form-grid">
         <div class="form-group">
           <label for="brevoApiKey">Brevo API Key</label>
-          <input type="password" id="brevoApiKey" value="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" readonly>
+          <input type="password" id="brevoApiKey" value="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" readonly>
         </div>
         <div class="form-group">
           <label for="senderEmail">Sender Email</label>
@@ -563,7 +590,7 @@
         </div>
       </div>
       <button type="button" id="testBrevoConfig" class="submit-btn" style="background: linear-gradient(135deg, #0d7377, #14a85f);">
-        🧪 Test Brevo Configuration
+        ðŸ§ª Test Brevo Configuration
       </button>
     </div>
 
@@ -575,32 +602,39 @@
             <label for="personalCredit">Personal Credit Score</label>
             <input type="number" id="personalCredit" min="300" max="850" required>
           </div>
+
           <div class="form-group">
             <label for="monthlyRevenue">Monthly Gross Revenue ($)</label>
             <input type="number" id="monthlyRevenue" min="0" required>
           </div>
+
           <div class="form-group">
             <label for="deposits">Number of Deposits</label>
             <input type="number" id="deposits" min="0" required>
           </div>
+
           <div class="form-group">
             <label for="nsfs">Number of NSFs</label>
             <input type="number" id="nsfs" min="0" required>
           </div>
+
           <div class="form-group">
             <label for="avgBalance">Average Daily Balance ($)</label>
             <input type="number" id="avgBalance" min="0" required>
           </div>
+
           <div class="form-group">
             <label for="monthsBusiness">Months in Business</label>
             <input type="number" id="monthsBusiness" min="0" required>
           </div>
+
           <div class="form-group">
             <label for="businessState">Business State</label>
             <select id="businessState" required>
               <option value="">-- Select State --</option>
             </select>
           </div>
+
           <div class="form-group">
             <label for="industry">Industry</label>
             <select id="industry" required>
@@ -608,35 +642,41 @@
             </select>
           </div>
         </div>
+
         <button type="submit" class="submit-btn">Find Qualifying Lenders</button>
         <button type="button" id="resetCalculator" class="submit-btn" style="background: linear-gradient(135deg, #dc3545, #c82333); margin-top: 10px; display: none;">
-          🔄 Reset Calculator
+          ðŸ”„ Reset Calculator
         </button>
       </form>
 
       <!-- Document Upload Section -->
       <div id="uploadSection" class="upload-section">
         <h3>Required Documents</h3>
+        
         <div class="file-upload-group">
           <label>Bank Statement Month 1 (PDF only)</label>
           <input type="file" class="file-input" accept=".pdf" data-statement="1">
           <div class="file-status" data-status="1">No file selected</div>
         </div>
+
         <div class="file-upload-group">
           <label>Bank Statement Month 2 (PDF only)</label>
           <input type="file" class="file-input" accept=".pdf" data-statement="2">
           <div class="file-status" data-status="2">No file selected</div>
         </div>
+
         <div class="file-upload-group">
           <label>Bank Statement Month 3 (PDF only)</label>
           <input type="file" class="file-input" accept=".pdf" data-statement="3">
           <div class="file-status" data-status="3">No file selected</div>
         </div>
+
         <div class="file-upload-group">
           <label>Bank Statement Month 4 (PDF only)</label>
           <input type="file" class="file-input" accept=".pdf" data-statement="4">
           <div class="file-status" data-status="4">No file selected</div>
         </div>
+
         <div class="file-upload-group">
           <label>Business Application (PDF only)</label>
           <input type="file" class="file-input" accept=".pdf" data-statement="application">
@@ -647,6 +687,7 @@
 
     <div class="card results-container">
       <h2>Lender Results</h2>
+      
       <div id="statsContainer" class="stats-container" style="display: none;">
         <div class="stat-item">
           <span class="stat-number" id="eligibleCount">0</span>
@@ -665,7 +706,7 @@
       <!-- Lender Selection Section -->
       <div id="lenderSelection" class="lender-selection-section">
         <div class="selection-summary">
-          <h3>📤 Select Lenders for Submission</h3>
+          <h3>ðŸ“¤ Select Lenders for Submission</h3>
           <p>Lenders are organized by priority. Select which approved lenders to submit documents to.</p>
           <div style="margin-top: 10px;">
             <strong>Selected: <span id="selectedCount">0</span> lenders</strong>
@@ -673,43 +714,68 @@
         </div>
 
         <div id="tier1Section" class="tier-section tier-1">
-          <div class="tier-header">🎯 Priority 1 - Best Options (Recommended first)</div>
-          <div class="tier-content" id="tier1Content"></div>
+          <div class="tier-header">
+            ðŸŽ¯ Priority 1 - Best Options (Recommended first)
+          </div>
+          <div class="tier-content" id="tier1Content">
+            <!-- Tier 1 lenders will be populated here -->
+          </div>
         </div>
 
         <div id="tier2Section" class="tier-section tier-2">
-          <div class="tier-header">⏰ Priority 2 - Solid Backup Options</div>
-          <div class="tier-content" id="tier2Content"></div>
+          <div class="tier-header">
+            â° Priority 2 - Solid Backup Options
+          </div>
+          <div class="tier-content" id="tier2Content">
+            <!-- Tier 2 lenders will be populated here -->
+          </div>
         </div>
 
         <div id="tier3Section" class="tier-section tier-3">
-          <div class="tier-header">🔄 Priority 3 - Alternative Options</div>
-          <div class="tier-content" id="tier3Content"></div>
+          <div class="tier-header">
+            ðŸ”„ Priority 3 - Alternative Options
+          </div>
+          <div class="tier-content" id="tier3Content">
+            <!-- Tier 3 lenders will be populated here -->
+          </div>
         </div>
 
         <div id="tier4Section" class="tier-section tier-4">
-          <div class="tier-header">🚨 Last Resort Option</div>
-          <div class="tier-content" id="tier4Content"></div>
+          <div class="tier-header">
+            ðŸš¨ Last Resort Option
+          </div>
+          <div class="tier-content" id="tier4Content">
+            <!-- Tier 4 lenders will be populated here -->
+          </div>
         </div>
 
         <div class="auto-escalation-controls">
-          <h4>⚙️ Auto-Escalation Settings</h4>
+          <h4>âš™ï¸ Auto-Escalation Settings</h4>
           <div class="checkbox-group">
             <input type="checkbox" id="autoEscalation" checked>
             <label for="autoEscalation">Automatically send to remaining approved lenders after 3 hours</label>
           </div>
+          <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">
+            This will automatically send documents to any approved lenders you didn't initially select.
+          </div>
         </div>
 
         <div class="submission-actions">
-          <button id="submitToSelected" class="action-btn primary-btn" disabled>📤 Submit to Selected Lenders</button>
-          <button id="submitToAll" class="action-btn secondary-btn" disabled>🚀 Submit to ALL Approved Lenders Now</button>
+          <button id="submitToSelected" class="action-btn primary-btn" disabled>
+            ðŸ“¤ Submit to Selected Lenders
+          </button>
+          <button id="submitToAll" class="action-btn secondary-btn" disabled>
+            ðŸš€ Submit to ALL Approved Lenders Now
+          </button>
         </div>
       </div>
 
       <!-- Submission Status -->
       <div id="submissionStatus" class="submission-status">
-        <h3>📊 Submission Status</h3>
-        <div id="statusList"></div>
+        <h3>ðŸ“Š Submission Status</h3>
+        <div id="statusList">
+          <!-- Status items will be populated here -->
+        </div>
       </div>
 
       <!-- Empty State -->
@@ -720,34 +786,372 @@
   </div>
 
   <script>
-    console.log('📧 Brevo API integration loaded');
-    
+    // Enhanced lender data with tier, contact info, and status
+    const lenders = [
+      { 
+        name: "IDEA FINANCIAL", 
+        tier: 1,
+        type: "portal",
+        contact: "Send an internal message to submit this lender via overseas Portal team.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 625, monthlyRevenue: 15000, deposits: 6, nsfs: 3, avgBalance: 4000, monthsBusiness: 24 }, 
+        restrictedIndustries: ["Farming", "Auto Sales", "Auto Rentals", "Oil & Gas", "Finance/Investment/Banks", "Bail-Bonds", "Finance", "Property Management", "Real Estate", "Education", "Marijuana/CBD", "Multi-Level Marketing Sales", "Brokers", "Mining & Quarries", "Government Services", "Gold Dealers", "Gun Sales", "Trucking", "Transportation", "Truck Leasing"],
+        restrictedStates: []
+      },
+      { 
+        name: "Kapitus", 
+        tier: 1,
+        type: "email",
+        contact: "newcontracts@kapitus.com",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 625, monthlyRevenue: 10000, deposits: 5, nsfs: 3, avgBalance: 600, monthsBusiness: 12 }, 
+        restrictedIndustries: ["Adult Entertainment", "Auto Sales", "Marijuana/CBD", "Cell Phone Stores", "Colleges/Universities", "Credit Repair", "Finance/Investment/Banks", "Government Services", "Insurance", "Boat Sales", "Non-Profit", "Auto Rentals", "Casino/ Gambling"],
+        restrictedStates: []
+      },
+      { 
+        name: "OnDeck", 
+        tier: 1,
+        type: "portal",
+        contact: "Send an internal message to submit this lender via overseas Portal team.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 625, monthlyRevenue: 15000, deposits: 5, nsfs: 3, avgBalance: 1000, monthsBusiness: 24 }, 
+        restrictedIndustries: ["Adult Entertainment", "Art Dealer", "Auto Sales", "Bail-Bonds", "Birth Tourism", "Boat Sales", "Brokers", "Marijuana/CBD", "Casino/ Gambling", "Cell Phone Stores", "Gold Dealers", "Gun Sales", "Horoscope/ Fortune Telling", "Money Services Businesses", "Multi-Level Marketing Sales", "Non-Profit", "Outdoor Power Equipment Stores", "Pawn Shops", "Private Households", "Religious/Civic Organizations", "RV Dealer"],
+        restrictedStates: []
+      },
+      { 
+        name: "Credibly", 
+        tier: 1,
+        type: "portal",
+        contact: "Send an internal message to submit this lender via overseas Portal team.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 550, monthlyRevenue: 20000, deposits: 4, nsfs: 7, avgBalance: 1000, monthsBusiness: 6 }, 
+        restrictedIndustries: ["Auto Sales", "Adult Entertainment", "Bail-Bonds", "Brokers", "Casino/ Gambling", "Credit Repair", "Dating Services", "Dickey's BBQ Franchises", "Government Agencies", "Gun Sales", "Law Firms", "Marijuana/CBD", "Multi-Level Marketing Sales", "Non-Profit", "Oil & Gas", "Religious/Civic Organizations", "Vape Shop", "Warrenty Services", "Trucking", "Transportation"],
+        restrictedStates: []
+      },
+      { 
+        name: "Mulligan", 
+        tier: 1,
+        type: "email",
+        contact: "partner@mulliganfunding.com",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 625, monthlyRevenue: 25000, deposits: 4, nsfs: 3, avgBalance: 3000, monthsBusiness: 6 }, 
+        restrictedIndustries: ["Adult Entertainment", "Art Dealer", "Auto Sales", "Bail-Bonds", "Birth Tourism", "Boat Sales", "Brokers", "Marijuana/CBD", "Casino/ Gambling", "Cell Phone Stores", "Gold Dealers", "Gun Sales", "Horoscope/ Fortune Telling", "Money Services Businesses", "Multi-Level Marketing Sales", "Non-Profit", "Outdoor Power Equipment Stores", "Pawn Shops", "Private Households", "Religious/Civic Organizations", "RV Dealer", "Finance/Investment/Banks", "Food Trucks", "Law Firms", "Non-Profit", "Real Estate", "Trucking", "Transportation", "Vending", "Vape Shop", "Insurance", "Restaurant"],
+        restrictedStates: []
+      },
+      { 
+        name: "PEAC Solutions", 
+        tier: 1,
+        type: "portal",
+        contact: "Send an internal message to submit this lender via overseas Portal team.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 675, monthlyRevenue: 42000, deposits: 5, nsfs: 3, avgBalance: 4200, monthsBusiness: 36 }, 
+        restrictedIndustries: ["Auto Sales", "Cleaning and Maintenance", "Construction", "Farming", "Finance/Investment/Banks", "Hotels & Lodging Memberships", "Law Firms", "Mining & Quarries", "Non-Profit", "Trucking", "Transportation", "Casino/ Gambling", "Adult Entertainment"],
+        restrictedStates: []
+      },
+      { 
+        name: "Headway Capital", 
+        tier: 1,
+        type: "portal",
+        contact: "Send an internal message to submit this lender via overseas Portal team.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 600, monthlyRevenue: 5000, deposits: 1, nsfs: 3, avgBalance: 500, monthsBusiness: 6 }, 
+        restrictedIndustries: ["Adult Entertainment", "Art Dealer", "Auto Sales", "Bail-Bonds", "Birth Tourism", "Boat Sales", "Brokers", "Marijuana/CBD", "Casino/ Gambling", "Cell Phone Stores", "Gold Dealers", "Gun Sales", "Horoscope/ Fortune Telling", "Money Services Businesses", "Multi-Level Marketing Sales", "Non-Profit", "Outdoor Power Equipment Stores", "Pawn Shops", "Private Households", "Religious/Civic Organizations", "RV Dealer"],
+        restrictedStates: []
+      },
+      { 
+        name: "Rapid Finance", 
+        tier: 1,
+        type: "email",
+        contact: "submissions@rapidfinance.com",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 600, monthlyRevenue: 10000, deposits: 3, nsfs: 5, avgBalance: 1000, monthsBusiness: 24 }, 
+        restrictedIndustries: ["Adult Entertainment", "Auto Sales", "Bail-Bonds", "Casino/ Gambling", "Collections", "Finance/Investment/Banks", "Gun Sales", "Influencers", "Law Firms", "Marijuana/CBD", "Multi-Level Marketing Sales", "Nightclub", "Non-Profit", "Real Estate", "Religious/Civic Organizations", "Trucking", "Transportation", "Vape Shop", "Property Management"],
+        restrictedStates: []
+      },
+      { 
+        name: "eFinancial Tree", 
+        tier: 3,
+        type: "email",
+        contact: "REMOVING FOR INTERNAL REASONS.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: false,
+        criteria: { personalCredit: 500, monthlyRevenue: 6000, deposits: 2, nsfs: 5, avgBalance: 600, monthsBusiness: 6 }, 
+        restrictedIndustries: [],
+        restrictedStates: []
+      },
+      { 
+        name: "Expansion", 
+        tier: 2,
+        type: "portal",
+        contact: "Send an internal message to submit this lender via overseas Portal team.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 550, monthlyRevenue: 6000, deposits: 2, nsfs: 6, avgBalance: 550, monthsBusiness: 6 }, 
+        restrictedIndustries: ["Adult Entertainment", "Auto Sales","Bail-Bonds", "Boat Sales", "Business Associations/Unions", "Call Centers", "Card Processors", "Casino/ Gambling", "Collections", "Finance/Investment/Banks", "Government Agencies", "Law Firms", "Lead Generators", "Lease-to-own Businesses", "Marijuana/CBD", "Mining & Quarries", "Multi-Level Marketing Sales", "Non-Profit", "Pawn Shops", "PREC.METALS", "Religious/Civic Organizations", "Brokers", "Travel Agencies"],
+        restrictedStates: []
+      },
+      { 
+        name: "Kalamata", 
+        tier: 3,
+        type: "email",
+        contact: "REMOVING FOR INTERNAL REASONS.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: false,
+        criteria: { personalCredit: 600, monthlyRevenue: 18000, deposits: 4, nsfs: 3, avgBalance: 750, monthsBusiness: 12 }, 
+        restrictedIndustries: [],
+        restrictedStates: []
+      },
+      { 
+        name: "Greenwich Capital", 
+        tier: 3,
+        type: "email",
+        contact: "REMOVING FOR INTERNAL REASONS.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: false,
+        criteria: { personalCredit: 600, monthlyRevenue: 50000, deposits: 3, nsfs: 3, avgBalance: 1000, monthsBusiness: 24 }, 
+        restrictedIndustries: [],
+        restrictedStates: []
+      },
+      { 
+        name: "CFG", 
+        tier: 2,
+        type: "email",
+        contact: "CZanelli@CFGMS.com",
+        ccEmails: ["camprelli@cfgms.com", "bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 500, monthlyRevenue: 15000, deposits: 3, nsfs: 4, avgBalance: 1000, monthsBusiness: 6 }, 
+        restrictedIndustries: ["Auto Sales", "Bail-Bonds", "Collections", "Non-Profit", "Religious/Civic Organizations", "Travel Agencies", "Wholesale", "Brokers"],
+        restrictedStates: []
+      },
+      { 
+        name: "Edge", 
+        tier: 2,
+        type: "email",
+        contact: "submissions@myedgecapital.com",
+        ccEmails: ["Heather@myedgecapital.com", "bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 500, monthlyRevenue: 6000, deposits: 2, nsfs: 5, avgBalance: 600, monthsBusiness: 6 }, 
+        restrictedIndustries: ["Adult Entertainment", "Auto Sales", "Auto Rentals", "Casino/ Gambling", "Trucking", "Transportation", "Brokers"],
+        restrictedStates: []
+      },
+      { 
+        name: "Legend", 
+        tier: 2,
+        type: "email",
+        contact: "apps@legendfunding.com",
+        ccEmails: ["evigdorov@legendfunding.com", "bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 650, monthlyRevenue: 30000, deposits: 3, nsfs: 3, avgBalance: 1000, monthsBusiness: 36 }, 
+        restrictedIndustries: ["Adult Entertainment", "Auto Sales", "Education", "Farming","Oil & Gas", "Gun Sales", "Law Firms", "Marijuana/CBD", "Non-Profit", "Pawn Shops", "Real Estate", "Brokers", "Religious/Civic Organizations", "Trucking", "Transportation"],
+        restrictedStates: []
+      },
+      { 
+        name: "Cashflo It", 
+        tier: 2,
+        type: "email",
+        contact: "deals@cashfloit.com",
+        ccEmails: ["matt@cashfloit.com", "bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 500, monthlyRevenue: 35000, deposits: 5, nsfs: 2, avgBalance: 600, monthsBusiness: 12 }, 
+        restrictedIndustries: ["Adult Entertainment", "Auto Sales", "Casino/ Gambling", "Collections", "Construction", "Contractors", "Roofing", "Electrician", "Landscaping", "Farming", "Finance/Investment/Banks", "Gas Stations", "Insurance", "Law Firms", "Marijuana/CBD", "Real Estate", "Brokers", "Title Companies", "Trucking", "Transportation"],
+        restrictedStates: []
+      },
+      { 
+        name: "Capital Assist", 
+        tier: 2,
+        type: "email",
+        contact: "Mg@capital-assist.com",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 500, monthlyRevenue: 75000, deposits: 3, nsfs: 6, avgBalance: 1000, monthsBusiness: 6 }, 
+        restrictedIndustries: ["Adult Entertainment", "Auto Sales", "Casino/ Gambling", "Collections", "Construction", "Contractors", "Farming", "Finance/Investment/Banks", "Gas Stations", "Insurance", "Law Firms", "Marijuana/CBD", "Real Estate", "Brokers", "Title Companies", "Trucking", "Transportation"],
+        restrictedStates: []
+      },
+      { 
+        name: "Greenbox", 
+        tier: 3,
+        type: "email",
+        contact: "REMOVING FOR INTERNAL REASONS.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: false,
+        criteria: { personalCredit: 500, monthlyRevenue: 10000, deposits: 2, nsfs: 7, avgBalance: 150, monthsBusiness: 5 }, 
+        restrictedIndustries: [],
+        restrictedStates: []
+      },
+      { 
+        name: "TVT Capital", 
+        tier: 2,
+        type: "email",
+        contact: "REMOVING FOR INTERNAL REASONS.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: false,
+        criteria: { personalCredit: 450, monthlyRevenue: 1000, deposits: 1, nsfs: 10, avgBalance: 500, monthsBusiness: 1 }, 
+        restrictedIndustries: [],
+        restrictedStates: []
+      },
+      { 
+        name: "Last Chance Funding", 
+        tier: 4,
+        type: "email",
+        contact: "Submissions@helpfcgroup.com",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 450, monthlyRevenue: 1000, deposits: 1, nsfs: 10, avgBalance: 500, monthsBusiness: 1 }, 
+        restrictedIndustries: ["Finance/Investment/Banks", "Medical/Healthcare"],
+        restrictedStates: []
+      },
+      { 
+        name: "BITTY", 
+        tier: 2,
+        type: "portal",
+        contact: "Send an internal message to submit this lender via overseas Portal team.",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 450, monthlyRevenue: 1000, deposits: 1, nsfs: 10, avgBalance: 100, monthsBusiness: 1 }, 
+        restrictedIndustries: ["Auto Sales", "Accounting"],
+        restrictedStates: []
+      },
+      { 
+        name: "Fundation", 
+        tier: 2,
+        type: "email",
+        contact: "businessloans@oneteamcapital.com",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 600, monthlyRevenue: 20000, deposits: 2, nsfs: 2, avgBalance: 1000, monthsBusiness: 6 }, 
+        restrictedIndustries: ["Law Firms", "Gun Sales", "Pawn Shops", "Non-Profit", "Real Estate", "Money Services Businesses", "Marijuana/CBD", "Trucking", "Transportation", "Bail-Bonds", "Finance/Investment/Banks"],
+        restrictedStates: []
+      },
+      { 
+        name: "Good Funding", 
+        tier: 2,
+        type: "email",
+        contact: "newdeals@goodfunding.com",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 600, monthlyRevenue: 5000, deposits: 4, nsfs: 3, avgBalance: 1200, monthsBusiness: 18 }, 
+        restrictedIndustries: [],
+        restrictedStates: []
+      },
+      { 
+        name: "GFE", 
+        tier: 2,
+        type: "email",
+        contact: "underwriting@globalfundingexperts.com",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 500, monthlyRevenue: 30000, deposits: 3, nsfs: 3, avgBalance: 1000, monthsBusiness: 12 }, 
+        restrictedIndustries: [],
+        restrictedStates: []
+      },
+      { 
+        name: "Fundation/ OneTeam LOC", 
+        tier: 1,
+        type: "email",
+        contact: "submissions@oneteamcapital.com",
+        ccEmails: ["bshokrian@flexibilitycapital.com"],
+        active: true,
+        criteria: { personalCredit: 650, monthlyRevenue: 25000, deposits: 2, nsfs: 2, avgBalance: 1000, monthsBusiness: 12 }, 
+        restrictedIndustries: ["Law Firms", "Pawn Shops", "Finance/Investment/Banks", "Non-Profit", "Real Estate", "Money Services Businesses", "Marijuana/CBD", "Trucking", "Transportation", "Bail-Bonds"],
+        restrictedStates: []
+      }
+    ];
+
+    // US States for dropdown
+    const states = [
+      "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", 
+      "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", 
+      "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", 
+      "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", 
+      "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", 
+      "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", 
+      "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+    ];
+
     // Global variables
     let approvedLenders = [];
     let uploadedFiles = {};
     let selectedLenders = [];
-    let brevoInitialized = true;
+    let emailjsInitialized = false;
 
-    // Brevo Configuration
-    const brevoConfig = {
-      apiKey: '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',
-      senderEmail: 'jmckevitt@flexibilitycapital.com',
-      senderName: 'Flexibility Capital'
+    // EmailJS Configuration
+    const emailConfig = {
+      serviceId: '',
+      templateId: '',
+      publicKey: '',
+      clientName: ''
     };
 
-    // Lender data
-    const lenders = [
-      { name: "IDEA FINANCIAL", tier: 1, type: "portal", contact: "jmckevitt@flexibilitycapital.com", ccEmails: ["bshokrian@flexibilitycapital.com"], active: true, criteria: { personalCredit: 625, monthlyRevenue: 15000, deposits: 6, nsfs: 3, avgBalance: 4000, monthsBusiness: 24 }, restrictedIndustries: ["Farming", "Auto Sales"], restrictedStates: [] },
-      { name: "Kapitus", tier: 1, type: "email", contact: "newcontracts@kapitus.com", ccEmails: ["bshokrian@flexibilitycapital.com"], active: true, criteria: { personalCredit: 625, monthlyRevenue: 10000, deposits: 5, nsfs: 3, avgBalance: 600, monthsBusiness: 12 }, restrictedIndustries: ["Adult Entertainment"], restrictedStates: [] },
-      { name: "OnDeck", tier: 1, type: "portal", contact: "jmckevitt@flexibilitycapital.com", ccEmails: ["bshokrian@flexibilitycapital.com"], active: true, criteria: { personalCredit: 625, monthlyRevenue: 15000, deposits: 5, nsfs: 3, avgBalance: 1000, monthsBusiness: 24 }, restrictedIndustries: ["Adult Entertainment"], restrictedStates: [] },
-      { name: "Credibly", tier: 1, type: "portal", contact: "jmckevitt@flexibilitycapital.com", ccEmails: ["bshokrian@flexibilitycapital.com"], active: true, criteria: { personalCredit: 550, monthlyRevenue: 20000, deposits: 4, nsfs: 7, avgBalance: 1000, monthsBusiness: 6 }, restrictedIndustries: ["Auto Sales"], restrictedStates: [] },
-      { name: "Last Chance Funding", tier: 4, type: "email", contact: "Submissions@helpfcgroup.com", ccEmails: ["bshokrian@flexibilitycapital.com"], active: true, criteria: { personalCredit: 450, monthlyRevenue: 1000, deposits: 1, nsfs: 10, avgBalance: 500, monthsBusiness: 1 }, restrictedIndustries: [], restrictedStates: [] }
-    ];
+    // Initialize EmailJS using v3 method
+    function initializeEmailJS() {
+      const serviceId = document.getElementById('emailjsServiceId').value.trim();
+      const templateId = document.getElementById('emailjsTemplateId').value.trim();
+      const publicKey = document.getElementById('emailjsPublicKey').value.trim();
+      
+      if (!serviceId || !templateId || !publicKey) {
+        return false;
+      }
+      
+      emailConfig.serviceId = serviceId;
+      emailConfig.templateId = templateId;
+      emailConfig.publicKey = publicKey;
+      
+      try {
+        // Check if EmailJS is available
+        if (typeof emailjs === 'undefined') {
+          console.error('âŒ EmailJS library not loaded');
+          return 'simulation';
+        }
+        
+        // Initialize EmailJS v3 style
+        emailjs.init(publicKey);
+        
+        emailjsInitialized = true;
+        console.log('âœ… EmailJS v3 initialized successfully');
+        return true;
+        
+      } catch (error) {
+        console.error('âŒ EmailJS initialization failed:', error);
+        return 'simulation';
+      }
+    }
 
-    // US States
-    const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
+    // Simulation fallback for when EmailJS doesn't load
+    function simulateEmailSending(lendersToSubmit, clientName) {
+      console.log('ðŸ“§ SIMULATION MODE - EmailJS not available');
+      const statusList = document.getElementById('statusList');
+      
+      lendersToSubmit.forEach((lender, index) => {
+        setTimeout(() => {
+          const statusItem = document.createElement('div');
+          statusItem.className = 'status-item';
+          statusItem.innerHTML = `
+            <span>${lender.name} (${lender.type.toUpperCase()}) - SIMULATED</span>
+            <span class="status-badge status-sent">SIMULATED</span>
+          `;
+          statusList.appendChild(statusItem);
+          
+          // Log what would be sent
+          console.log(`ðŸ“§ SIMULATED EMAIL TO: ${lender.contact}`);
+          console.log(`CC: ${lender.ccEmails.join(', ')}`);
+          console.log(`SUBJECT: New Business Application - ${clientName}`);
+          console.log(`CLIENT: ${clientName}`);
+          console.log('---');
+        }, index * 500);
+      });
+      
+      return true;
+    }
 
-    // Convert file to base64
+    // Convert file to base64 for email attachment
     function fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -757,42 +1161,733 @@
       });
     }
 
-    // Prepare attachments for Brevo
-    async function prepareAttachments() {
-      const attachments = [];
-      const fileMapping = {
-        '1': 'Bank_Statement_Month_1.pdf',
-        '2': 'Bank_Statement_Month_2.pdf',
-        '3': 'Bank_Statement_Month_3.pdf',
-        '4': 'Bank_Statement_Month_4.pdf',
-        'application': 'Business_Application.pdf'
-      };
-
-      for (const [key, file] of Object.entries(uploadedFiles)) {
-        try {
-          const base64Content = await fileToBase64(file);
-          attachments.push({
-            name: fileMapping[key] || `document_${key}.pdf`,
-            content: base64Content
-          });
-        } catch (error) {
-          console.error(`Failed to convert ${key} to base64:`, error);
+    // Send email to lender via Brevo with REAL attachments
+    async function sendEmailToLender(lender, clientName, attachments) {
+      try {
+        if (!brevoInitialized) {
+          throw new Error('Brevo not initialized');
         }
-      }
 
-      return attachments;
+        // Prepare attachments for Brevo
+        const brevoAttachments = [];
+        for (const [key, file] of Object.entries(uploadedFiles)) {
+          try {
+            const base64Content = await fileToBase64(file);
+            let fileName = file.name;
+            
+            // Add descriptive names
+            if (key === 'application') {
+              fileName = `Business_Application_${clientName.replace(/\s+/g, '_')}.pdf`;
+            } else {
+              fileName = `Bank_Statement_Month_${key}_${clientName.replace(/\s+/g, '_')}.pdf`;
+            }
+            
+            brevoAttachments.push({
+              content: base64Content,
+              name: fileName
+            });
+          } catch (error) {
+            console.error(`Error processing file ${key}:`, error);
+          }
+        }
+
+        const htmlContent = `
+          <h3>New Business Loan Application - ${clientName}</h3>
+          
+          <p>Dear ${lender.name},</p>
+          
+          <p>Please find attached the complete business loan application for <strong>${clientName}</strong>.</p>
+          
+          <h4>Application Details:</h4>
+          <ul>
+            <li><strong>Client Name:</strong> ${clientName}</li>
+            <li><strong>Submission Type:</strong> ${lender.type.toUpperCase()}</li>
+            <li><strong>Documents Attached:</strong> ${brevoAttachments.length} files</li>
+          </ul>
+          
+          <h4>Attached Documents:</h4>
+          <ul>
+            ${brevoAttachments.map(att => `<li>${att.name}</li>`).join('')}
+          </ul>
+          
+          <p>Please review the application and let us know if you need any additional information.</p>
+          
+          <p>Best regards,<br>
+          <strong>Flexibility Capital Team</strong><br>
+          ${brevoConfig.senderEmail}</p>
+        `;
+
+        console.log(`ðŸ“§ Sending to ${lender.name} with ${brevoAttachments.length} attachments...`);
+
+        const result = await sendBrevoEmail(
+          lender.contact,
+          lender.ccEmails,
+          `New Business Application - ${clientName}`,
+          htmlContent,
+          brevoAttachments
+        );
+
+        return result;
+        
+      } catch (error) {
+        console.error(`âŒ Failed to send email to ${lender.name}:`, error);
+        return { success: false, error: error.message };
+      }
     }
 
-    // Send email via Brevo API
-    async function sendBrevoEmail(to, cc, subject, htmlContent, attachments = []) {
+    // Send internal message for portal lenders via Brevo
+    async function sendPortalMessage(lender, clientName) {
       try {
-        const emailData = {
-          sender: { 
-            name: document.getElementById('senderName').value || brevoConfig.senderName, 
-            email: document.getElementById('senderEmail').value || brevoConfig.senderEmail 
-          },
-          to: [{ email: to }],
-          cc: cc.map(email => ({ email: email.trim() })),
-          subject: subject,
-          htmlContent: htmlContent,
-          attachment: attachments
+        if (!brevoInitialized) {
+          throw new Error('Brevo not initialized');
+        }
+
+        const htmlContent = `
+          <h3>Portal Submission Required - ${lender.name}</h3>
+          
+          <p>Please submit <strong>${clientName}'s</strong> application to <strong>${lender.name}</strong> via their portal system.</p>
+          
+          <h4>Portal Instructions:</h4>
+          <p>${lender.contact}</p>
+          
+          <h4>Client Details:</h4>
+          <ul>
+            <li><strong>Client Name:</strong> ${clientName}</li>
+            <li><strong>Lender:</strong> ${lender.name}</li>
+            <li><strong>Submission Type:</strong> Portal</li>
+          </ul>
+          
+          <p>The client documents have been uploaded and are ready for manual portal submission.</p>
+          
+          <p>Best regards,<br>
+          <strong>Peapod Calculator System</strong></p>
+        `;
+
+        console.log(`ðŸ“‹ Sending portal message for ${lender.name}...`);
+        
+        const result = await sendBrevoEmail(
+          'jmckevitt@flexibilitycapital.com',
+          lender.ccEmails,
+          `Portal Submission Required - ${lender.name}`,
+          htmlContent
+        );
+
+        return result;
+        
+      } catch (error) {
+        console.error(`âŒ Failed to send portal message for ${lender.name}:`, error);
+        return { success: false, error: error.message };
+      }
+    }
+
+    // Process all submissions using Brevo
+    async function processSubmissions(lendersToSubmit) {
+      const clientName = document.getElementById('clientName').value.trim();
+      
+      if (!clientName) {
+        alert('Please enter the client name before submitting.');
+        return false;
+      }
+
+      // Manual check instead of initializeBrevo()
+      const apiKey = document.getElementById('brevoApiKey').value.trim();
+      const senderEmail = document.getElementById('senderEmail').value.trim();
+      const senderName = document.getElementById('senderName').value.trim();
+      
+      if (!apiKey || !senderEmail || !senderName) {
+        alert('Please check your Brevo configuration.');
+        return false;
+      }
+      
+      // Update config
+      brevoConfig.apiKey = apiKey;
+      brevoConfig.senderEmail = senderEmail;
+      brevoConfig.senderName = senderName;
+
+      const statusList = document.getElementById('statusList');
+      statusList.innerHTML = '';
+      
+      let successCount = 0;
+      let failCount = 0;
+
+      // Process each lender
+      for (const lender of lendersToSubmit) {
+        // Add pending status
+        const statusItem = document.createElement('div');
+        statusItem.className = 'status-item';
+        statusItem.id = `status-${lender.name.replace(/[^a-zA-Z0-9]/g, '')}`;
+        statusItem.innerHTML = `
+          <span>${lender.name} (${lender.type.toUpperCase()})</span>
+          <span class="status-badge status-pending">SENDING...</span>
+        `;
+        statusList.appendChild(statusItem);
+
+        // Send email or portal message via Brevo
+        let result;
+        if (lender.type === 'email') {
+          result = await sendEmailToLender(lender, clientName, uploadedFiles);
+        } else {
+          result = await sendPortalMessage(lender, clientName);
+        }
+
+        // Update status
+        const statusBadge = statusItem.querySelector('.status-badge');
+        if (result.success) {
+          statusBadge.textContent = 'SENT âœ“';
+          statusBadge.className = 'status-badge status-sent';
+          successCount++;
+        } else {
+          statusBadge.textContent = 'FAILED';
+          statusBadge.className = 'status-badge status-error';
+          failCount++;
+        }
+
+        // Small delay between sends to avoid rate limits
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+
+      // Show summary
+      console.log(`ðŸ“Š Submission Complete: ${successCount} sent, ${failCount} failed`);
+      
+      if (failCount > 0) {
+        alert(`Submission completed with ${failCount} failures. Check console for details.`);
+      } else {
+        alert(`ðŸŽ‰ All ${successCount} submissions sent successfully with PDF attachments!`);
+      }
+
+      return true;
+    }
+
+    // Initialize dropdowns
+    function initializeDropdowns() {
+      const stateSelect = document.getElementById('businessState');
+      states.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state;
+        option.textContent = state;
+        stateSelect.appendChild(option);
+      });
+
+      const industrySet = new Set(['Other']);
+      lenders.forEach(lender => {
+        lender.restrictedIndustries.forEach(ind => industrySet.add(ind));
+      });
+
+      const industrySelect = document.getElementById('industry');
+      [...industrySet].sort().forEach(industry => {
+        const option = document.createElement('option');
+        option.value = industry;
+        option.textContent = industry;
+        industrySelect.appendChild(option);
+      });
+    }
+
+    // File upload handlers
+    function initializeFileHandlers() {
+      const fileInputs = document.querySelectorAll('.file-input');
+      fileInputs.forEach(input => {
+        input.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          const statementType = e.target.dataset.statement;
+          const statusElement = document.querySelector(`[data-status="${statementType}"]`);
+          
+          if (file) {
+            if (file.type !== 'application/pdf') {
+              statusElement.textContent = 'Error: Only PDF files are allowed';
+              statusElement.className = 'file-status error';
+              e.target.value = '';
+              delete uploadedFiles[statementType];
+            } else if (file.size > 10 * 1024 * 1024) { // 10MB limit
+              statusElement.textContent = 'Error: File too large (max 10MB)';
+              statusElement.className = 'file-status error';
+              e.target.value = '';
+              delete uploadedFiles[statementType];
+            } else {
+              statusElement.textContent = `âœ“ ${file.name} (${(file.size / 1024 / 1024).toFixed(1)}MB)`;
+              statusElement.className = 'file-status success';
+              uploadedFiles[statementType] = file;
+            }
+          } else {
+            statusElement.textContent = 'No file selected';
+            statusElement.className = 'file-status';
+            delete uploadedFiles[statementType];
+          }
+          
+          updateSubmissionButtons();
+        });
+      });
+    }
+
+    // Check if all files are uploaded
+    function allFilesUploaded() {
+      const requiredFiles = ['1', '2', '3', '4', 'application'];
+      return requiredFiles.every(type => uploadedFiles[type]);
+    }
+
+    // Update submission button states
+    function updateSubmissionButtons() {
+      const submitSelected = document.getElementById('submitToSelected');
+      const submitAll = document.getElementById('submitToAll');
+      const hasFiles = allFilesUploaded();
+      const hasSelection = selectedLenders.length > 0;
+      
+      if (submitSelected) {
+        submitSelected.disabled = !hasFiles || !hasSelection;
+      }
+      if (submitAll) {
+        submitAll.disabled = !hasFiles || approvedLenders.filter(l => l.active).length === 0;
+      }
+    }
+
+    // Qualification logic
+    function generateDetailedExplanation(lender, input) {
+      const requirements = [
+        {
+          label: "Credit Score",
+          required: lender.criteria.personalCredit,
+          actual: input.personalCredit,
+          passes: input.personalCredit >= lender.criteria.personalCredit
+        },
+        {
+          label: "Monthly Revenue",
+          required: lender.criteria.monthlyRevenue,
+          actual: input.monthlyRevenue,
+          passes: input.monthlyRevenue >= lender.criteria.monthlyRevenue
+        },
+        {
+          label: "Monthly Deposits",
+          required: lender.criteria.deposits,
+          actual: input.deposits,
+          passes: input.deposits >= lender.criteria.deposits
+        },
+        {
+          label: "Max NSFs",
+          required: lender.criteria.nsfs,
+          actual: input.nsfs,
+          passes: input.nsfs <= lender.criteria.nsfs
+        },
+        {
+          label: "Avg Daily Balance",
+          required: lender.criteria.avgBalance,
+          actual: input.avgBalance,
+          passes: input.avgBalance >= lender.criteria.avgBalance
+        },
+        {
+          label: "Months in Business",
+          required: lender.criteria.monthsBusiness,
+          actual: input.monthsBusiness,
+          passes: input.monthsBusiness >= lender.criteria.monthsBusiness
+        }
+      ];
+
+      const industryBlocked = lender.restrictedIndustries.includes(input.industry);
+      const stateBlocked = lender.restrictedStates.includes(input.businessState);
+      const failedRequirements = requirements.filter(req => !req.passes);
+      
+      return {
+        requirements,
+        industryBlocked,
+        stateBlocked,
+        failedRequirements,
+        eligible: failedRequirements.length === 0 && !industryBlocked && !stateBlocked && lender.active
+      };
+    }
+
+    // Create lender item for selection
+    function createLenderSelectionItem(lender) {
+      const div = document.createElement('div');
+      div.className = `lender-item ${!lender.active ? 'inactive' : ''}`;
+      div.dataset.lenderId = lender.name;
+      
+      div.innerHTML = `
+        <div class="lender-info">
+          <div class="lender-name">${lender.name}</div>
+          <div class="lender-details">
+            <span class="submission-type type-${lender.type}">${lender.type.toUpperCase()}</span>
+            Tier ${lender.tier} ${!lender.active ? '(INACTIVE)' : ''}
+          </div>
+        </div>
+        <input type="checkbox" class="lender-checkbox" ${!lender.active ? 'disabled' : ''}>
+      `;
+
+      if (lender.active) {
+        const checkbox = div.querySelector('.lender-checkbox');
+        checkbox.addEventListener('change', function() {
+          if (this.checked) {
+            selectedLenders.push(lender);
+            div.classList.add('selected');
+          } else {
+            selectedLenders = selectedLenders.filter(l => l.name !== lender.name);
+            div.classList.remove('selected');
+          }
+          updateSelectionCount();
+          updateSubmissionButtons();
+        });
+
+        div.addEventListener('click', function(e) {
+          if (e.target.type !== 'checkbox') {
+            checkbox.click();
+          }
+        });
+      }
+
+      return div;
+    }
+
+    // Update selection count
+    function updateSelectionCount() {
+      const countElement = document.getElementById('selectedCount');
+      if (countElement) {
+        countElement.textContent = selectedLenders.length;
+      }
+    }
+
+    // Populate tier sections
+    function populateTierSections() {
+      const tierSections = {
+        1: document.getElementById('tier1Content'),
+        2: document.getElementById('tier2Content'),
+        3: document.getElementById('tier3Content'),
+        4: document.getElementById('tier4Content')
+      };
+
+      // Clear all sections
+      Object.values(tierSections).forEach(section => {
+        if (section) section.innerHTML = '';
+      });
+
+      // Group approved lenders by tier
+      const lendersByTier = {};
+      approvedLenders.forEach(lender => {
+        if (!lendersByTier[lender.tier]) {
+          lendersByTier[lender.tier] = [];
+        }
+        lendersByTier[lender.tier].push(lender);
+      });
+
+      // Populate each tier
+      Object.keys(lendersByTier).forEach(tier => {
+        const section = tierSections[tier];
+        if (section && lendersByTier[tier].length > 0) {
+          lendersByTier[tier].forEach(lender => {
+            section.appendChild(createLenderSelectionItem(lender));
+          });
+        }
+      });
+
+      // Hide empty tier sections
+      Object.keys(tierSections).forEach(tier => {
+        const section = tierSections[tier];
+        const sectionContainer = document.getElementById(`tier${tier}Section`);
+        if (section && sectionContainer) {
+          if (!lendersByTier[tier] || lendersByTier[tier].length === 0) {
+            sectionContainer.style.display = 'none';
+          } else {
+            sectionContainer.style.display = 'block';
+          }
+        }
+      });
+    }
+
+    // Simulate email sending (now replaced with real sending)
+    async function submitToLenders(lendersToSubmit) {
+      document.getElementById('submissionStatus').classList.add('active');
+      return await processSubmissions(lendersToSubmit);
+    }
+
+    // Reset calculator function
+    function resetCalculator() {
+      // Reset form
+      document.getElementById('calculatorForm').reset();
+      
+      // Reset global variables
+      approvedLenders = [];
+      selectedLenders = [];
+      uploadedFiles = {};
+      
+      // Hide all sections
+      document.getElementById('uploadSection').classList.remove('active');
+      document.getElementById('lenderSelection').classList.remove('active');
+      document.getElementById('submissionStatus').classList.remove('active');
+      document.getElementById('statsContainer').style.display = 'none';
+      document.getElementById('emptyState').style.display = 'block';
+      document.getElementById('resetCalculator').style.display = 'none';
+      
+      // Reset file upload statuses
+      const fileInputs = document.querySelectorAll('.file-input');
+      fileInputs.forEach(input => {
+        input.value = '';
+        const statementType = input.dataset.statement;
+        const statusElement = document.querySelector(`[data-status="${statementType}"]`);
+        statusElement.textContent = 'No file selected';
+        statusElement.className = 'file-status';
+      });
+      
+      // Reset tier sections
+      const tierContents = ['tier1Content', 'tier2Content', 'tier3Content', 'tier4Content'];
+      tierContents.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.innerHTML = '';
+      });
+      
+      // Reset selection count
+      updateSelectionCount();
+      
+      // Reset submission buttons
+      const submitSelected = document.getElementById('submitToSelected');
+      const submitAll = document.getElementById('submitToAll');
+      if (submitSelected) {
+        submitSelected.disabled = true;
+        submitSelected.textContent = 'ðŸ“¤ Submit to Selected Lenders';
+      }
+      if (submitAll) {
+        submitAll.disabled = true;
+        submitAll.textContent = 'ðŸš€ Submit to ALL Approved Lenders Now';
+      }
+      
+      // Reset auto-escalation checkbox
+      document.getElementById('autoEscalation').checked = true;
+      
+      // Clear console for new session
+      console.clear();
+      console.log('ðŸ”„ Calculator Reset - Ready for new application');
+    }
+
+    // Form submission handler
+    document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = this.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Analyzing...';
+      submitBtn.disabled = true;
+
+      const input = {
+        personalCredit: +this.personalCredit.value,
+        monthlyRevenue: +this.monthlyRevenue.value,
+        deposits: +this.deposits.value,
+        nsfs: +this.nsfs.value,
+        avgBalance: +this.avgBalance.value,
+        monthsBusiness: +this.monthsBusiness.value,
+        businessState: this.businessState.value,
+        industry: this.industry.value
+      };
+
+      setTimeout(() => {
+        try {
+          // Reset previous results
+          approvedLenders = [];
+          selectedLenders = [];
+          uploadedFiles = {};
+
+          // Analyze lenders
+          let eligibleCount = 0;
+          lenders.forEach(lender => {
+            const explanation = generateDetailedExplanation(lender, input);
+            if (explanation.eligible) {
+              eligibleCount++;
+              approvedLenders.push(lender);
+            }
+          });
+
+          // Update stats
+          document.getElementById('eligibleCount').textContent = eligibleCount;
+          document.getElementById('totalCount').textContent = lenders.filter(l => l.active).length;
+          document.getElementById('matchRate').textContent = 
+            lenders.filter(l => l.active).length > 0 ? 
+            Math.round((eligibleCount / lenders.filter(l => l.active).length) * 100) + '%' : '0%';
+
+          // Show results
+          document.getElementById('statsContainer').style.display = 'flex';
+          document.getElementById('emptyState').style.display = 'none';
+
+          if (eligibleCount > 0) {
+            // Show upload section and lender selection
+            document.getElementById('uploadSection').classList.add('active');
+            populateTierSections();
+            document.getElementById('lenderSelection').classList.add('active');
+            
+            // Show reset button
+            document.getElementById('resetCalculator').style.display = 'block';
+          } else {
+            // Hide upload section if no approved lenders
+            document.getElementById('uploadSection').classList.remove('active');
+            document.getElementById('lenderSelection').classList.remove('active');
+            
+            // Still show reset button for failed qualifications
+            document.getElementById('resetCalculator').style.display = 'block';
+          }
+
+        } catch (error) {
+          console.error('Error processing results:', error);
+          alert('Sorry, there was an error processing your results. Please try again.');
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      }, 800);
+    });
+
+    // Submission handlers
+    document.getElementById('submitToSelected').addEventListener('click', async function() {
+      if (selectedLenders.length === 0) {
+        alert('Please select at least one lender to submit to.');
+        return;
+      }
+      
+      if (!allFilesUploaded()) {
+        alert('Please upload all required documents before submitting.');
+        return;
+      }
+
+      this.disabled = true;
+      this.textContent = 'Sending...';
+      
+      const success = await submitToLenders(selectedLenders);
+      
+      if (success) {
+        const autoEscalation = document.getElementById('autoEscalation').checked;
+        
+        if (autoEscalation) {
+          const remainingLenders = approvedLenders.filter(lender => 
+            lender.active && !selectedLenders.some(selected => selected.name === lender.name)
+          );
+          
+          if (remainingLenders.length > 0) {
+            setTimeout(async () => {
+              if (confirm(`Auto-escalation: Send to ${remainingLenders.length} remaining approved lenders?`)) {
+                await submitToLenders(remainingLenders);
+              }
+            }, 3000); // 3 seconds for demo (would be 3 hours in production)
+          }
+        }
+        
+        this.textContent = 'âœ“ Submitted';
+      } else {
+        this.disabled = false;
+        this.textContent = 'ðŸ“¤ Submit to Selected Lenders';
+      }
+    });
+
+    document.getElementById('submitToAll').addEventListener('click', async function() {
+      if (!allFilesUploaded()) {
+        alert('Please upload all required documents before submitting.');
+        return;
+      }
+
+      this.disabled = true;
+      this.textContent = 'Sending...';
+      
+      const activeLenders = approvedLenders.filter(l => l.active);
+      const success = await submitToLenders(activeLenders);
+      
+      if (success) {
+        this.textContent = 'âœ“ Submitted to All';
+        document.getElementById('submitToSelected').disabled = true;
+      } else {
+        this.disabled = false;
+        this.textContent = 'ðŸš€ Submit to ALL Approved Lenders Now';
+      }
+    });
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeDropdowns();
+      initializeFileHandlers();
+      
+      // Auto-initialize Brevo with default values
+      brevoInitialized = true;
+      console.log('âœ… Brevo auto-initialized with default configuration');
+      
+      // Reset button handler
+      document.getElementById('resetCalculator').addEventListener('click', function() {
+        if (confirm('Are you sure you want to reset the calculator? This will clear all entered data and uploaded files.')) {
+          resetCalculator();
+        }
+      });
+      
+      // Test Brevo configuration
+      document.getElementById('testBrevoConfig').addEventListener('click', async function() {
+        const originalText = this.textContent;
+        this.disabled = true;
+        this.textContent = 'Testing...';
+        
+        try {
+          // Manual check instead of initializeBrevo()
+          const apiKey = document.getElementById('brevoApiKey').value.trim();
+          const senderEmail = document.getElementById('senderEmail').value.trim();
+          const senderName = document.getElementById('senderName').value.trim();
+          
+          if (!apiKey || !senderEmail || !senderName) {
+            throw new Error('Please fill in all Brevo configuration fields correctly.');
+          }
+          
+          // Update config
+          brevoConfig.apiKey = apiKey;
+          brevoConfig.senderEmail = senderEmail;
+          brevoConfig.senderName = senderName;
+          
+          const clientName = document.getElementById('clientName').value || 'Test Client';
+          
+          const htmlContent = `
+            <h3>Brevo Configuration Test - Peapod Calculator</h3>
+            
+            <p>This is a test email to verify Brevo integration is working correctly.</p>
+            
+            <h4>Test Details:</h4>
+            <ul>
+              <li><strong>Client:</strong> ${clientName}</li>
+              <li><strong>Sender:</strong> ${brevoConfig.senderEmail}</li>
+              <li><strong>System:</strong> Peapod Calculator v2.0</li>
+              <li><strong>Date:</strong> ${new Date().toLocaleString()}</li>
+            </ul>
+            
+            <p>If you receive this email, the Brevo integration is working perfectly!</p>
+            
+            <p>Best regards,<br>
+            <strong>Peapod Calculator System</strong></p>
+          `;
+          
+          console.log('ðŸ§ª Sending Brevo test email...');
+          
+          const result = await sendBrevoEmail(
+            'jmckevitt@flexibilitycapital.com',
+            ['bshokrian@flexibilitycapital.com'],
+            'Brevo Test - Peapod Calculator',
+            htmlContent
+          );
+          
+          if (result.success) {
+            alert('âœ… Test email sent successfully via Brevo! Check your inbox at jmckevitt@flexibilitycapital.com');
+            console.log('âœ… Brevo test successful:', result);
+          } else {
+            throw new Error(result.error);
+          }
+          
+        } catch (error) {
+          const errorMsg = error.message || 'Unknown error occurred';
+          alert(`âŒ Test failed: ${errorMsg}\n\nPlease check your Brevo API key and configuration.`);
+          console.error('âŒ Brevo test error:', error);
+        } finally {
+          this.disabled = false;
+          this.textContent = originalText;
+        }
+      });
+    });
+
+    // Currency input formatting
+    const currencyInputs = ['monthlyRevenue', 'avgBalance'];
+    currencyInputs.forEach(id => {
+      const input = document.getElementById(id);
+      input.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/[^\d.]/g, '');
+        const parts = value.split('.');
+        if (parts.length > 2) {
+          value = parts[0] + '.' + parts.slice(1).join('');
+        }
+        e.target.value = value;
+      });
+    });
+  </script>
+</body>
+</html>
