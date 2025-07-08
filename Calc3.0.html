@@ -169,7 +169,7 @@
     }
 
     .results-container h2::before {
-      content: "ðŸ¦";
+      content: "🦊";
       font-size: 1.5rem;
     }
 
@@ -425,7 +425,7 @@
     }
 
     .empty-state::before {
-      content: "ðŸ¢";
+      content: "🏢";
       display: block;
       font-size: 3rem;
       margin-bottom: 15px;
@@ -538,7 +538,7 @@
 
         <button type="submit" class="submit-btn">Find Qualifying Lenders</button>
         <button type="button" id="resetCalculator" class="submit-btn" style="background: linear-gradient(135deg, #dc3545, #c82333); margin-top: 10px; display: none;">
-          ðŸ"„ Reset Calculator
+          🔄 Reset Calculator
         </button>
       </form>
 
@@ -566,7 +566,7 @@
       <!-- Lender Selection Section -->
       <div id="lenderSelection" class="lender-selection-section">
         <div class="selection-summary">
-          <h3>ð¤ Select Lenders for Submission</h3>
+          <h3>🤝 Select Lenders for Submission</h3>
           <p>Lenders are organized by priority. Select which approved lenders to submit documents to.</p>
           <div style="margin-top: 10px;">
             <strong>Selected: <span id="selectedCount">0</span> lenders</strong>
@@ -575,7 +575,7 @@
 
         <div id="tier1Section" class="tier-section tier-1">
           <div class="tier-header">
-            ðŽ¯ Priority 1 - Best Options (Recommended first)
+            🎯 Priority 1 - Best Options (Recommended first)
           </div>
           <div class="tier-content" id="tier1Content">
             <!-- Tier 1 lenders will be populated here -->
@@ -593,7 +593,7 @@
 
         <div id="tier3Section" class="tier-section tier-3">
           <div class="tier-header">
-            ð" Priority 3 - Alternative Options
+            🔶 Priority 3 - Alternative Options
           </div>
           <div class="tier-content" id="tier3Content">
             <!-- Tier 3 lenders will be populated here -->
@@ -602,7 +602,7 @@
 
         <div id="tier4Section" class="tier-section tier-4">
           <div class="tier-header">
-            ðš Last Resort Option
+            🚨 Last Resort Option
           </div>
           <div class="tier-content" id="tier4Content">
             <!-- Tier 4 lenders will be populated here -->
@@ -940,6 +940,7 @@
     // Global variables
     let approvedLenders = [];
     let selectedLenders = [];
+    let uploadedFiles = {};
 
 
 
@@ -1363,8 +1364,12 @@ Peapod Calculator System`;
       document.getElementById('autoEscalation').checked = true;
       
       // Clear console for new session
-      console.clear();
-      console.log(' " Calculator Reset - Ready for new application');
+      try {
+        console.clear();
+      } catch(e) {
+        // Silently fail if console.clear is not supported
+      }
+      console.log('🔄 Calculator Reset - Ready for new application');
     }
 
     // Form submission handler
@@ -1470,10 +1475,10 @@ Peapod Calculator System`;
         }
         
         this.textContent = '✓ Emails Opened';
-              } else {
-          this.disabled = false;
-          this.textContent = '📧 Open Selected Lender Emails';
-        }
+      } else {
+        this.disabled = false;
+        this.textContent = '📧 Open Selected Lender Emails';
+      }
     });
 
     document.getElementById('submitToAll').addEventListener('click', async function() {
@@ -1483,13 +1488,13 @@ Peapod Calculator System`;
       const activeLenders = approvedLenders.filter(l => l.active);
       const success = await submitToLenders(activeLenders);
       
-              if (success) {
-          this.textContent = '✓ All Emails Opened';
-          document.getElementById('submitToSelected').disabled = true;
-        } else {
-          this.disabled = false;
-          this.textContent = '📧 Open ALL Approved Lender Emails';
-        }
+      if (success) {
+        this.textContent = '✓ All Emails Opened';
+        document.getElementById('submitToSelected').disabled = true;
+      } else {
+        this.disabled = false;
+        this.textContent = '📧 Open ALL Approved Lender Emails';
+      }
     });
 
     // Initialize the application
@@ -1512,14 +1517,16 @@ Peapod Calculator System`;
     const currencyInputs = ['monthlyRevenue', 'avgBalance'];
     currencyInputs.forEach(id => {
       const input = document.getElementById(id);
-      input.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/[^\d.]/g, '');
-        const parts = value.split('.');
-        if (parts.length > 2) {
-          value = parts[0] + '.' + parts.slice(1).join('');
-        }
-        e.target.value = value;
-      });
+      if (input) {
+        input.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/[^\d.]/g, '');
+          const parts = value.split('.');
+          if (parts.length > 2) {
+            value = parts[0] + '.' + parts.slice(1).join('');
+          }
+          e.target.value = value;
+        });
+      }
     });
   </script>
 </body>
