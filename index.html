@@ -86,7 +86,7 @@
     }
 
     .form-container h2::before {
-      content: "📋";
+      content: "ðŸ“‹";
       font-size: 1.5rem;
     }
 
@@ -169,7 +169,7 @@
     }
 
     .results-container h2::before {
-      content: "🦊";
+      content: "ðŸ¦Š";
       font-size: 1.5rem;
     }
 
@@ -425,7 +425,7 @@
     }
 
     .empty-state::before {
-      content: "🏢";
+      content: "ðŸ¢";
       display: block;
       font-size: 3rem;
       margin-bottom: 15px;
@@ -482,7 +482,7 @@
       <h1>Enhanced Peapod Calculator</h1>
       <p>Advanced Business Lending Qualification & Submission Tool</p>
       <p style="margin-top: 10px; padding: 10px; background: rgba(107, 142, 35, 0.1); border-radius: 8px; font-size: 0.9rem;">
-        📧 <strong>Outlook Integration:</strong> This tool will open pre-populated emails in your Outlook client with contact information, CC recipients, and email templates. You'll need to manually attach your documents before sending.
+        ðŸ“§ <strong>Outlook Integration:</strong> This tool will open pre-populated emails in your Outlook client with contact information, CC recipients, and email templates. You'll need to manually attach your documents before sending.
       </p>
       <span class="version-badge">v2.0</span>
     </div>
@@ -538,7 +538,7 @@
 
         <button type="submit" class="submit-btn">Find Qualifying Lenders</button>
         <button type="button" id="resetCalculator" class="submit-btn" style="background: linear-gradient(135deg, #dc3545, #c82333); margin-top: 10px; display: none;">
-          🔄 Reset Calculator
+          ðŸ”„ Reset Calculator
         </button>
       </form>
 
@@ -566,7 +566,7 @@
       <!-- Lender Selection Section -->
       <div id="lenderSelection" class="lender-selection-section">
         <div class="selection-summary">
-          <h3>🤝 Select Lenders for Submission</h3>
+          <h3>ðŸ¤ Select Lenders for Submission</h3>
           <p>Lenders are organized by priority. Select which approved lenders to submit documents to.</p>
           <div style="margin-top: 10px;">
             <strong>Selected: <span id="selectedCount">0</span> lenders</strong>
@@ -575,7 +575,7 @@
 
         <div id="tier1Section" class="tier-section tier-1">
           <div class="tier-header">
-            🎯 Priority 1 - Best Options (Recommended first)
+            ðŸŽ¯ Priority 1 - Best Options (Recommended first)
           </div>
           <div class="tier-content" id="tier1Content">
             <!-- Tier 1 lenders will be populated here -->
@@ -593,7 +593,7 @@
 
         <div id="tier3Section" class="tier-section tier-3">
           <div class="tier-header">
-            🔶 Priority 3 - Alternative Options
+            ðŸ”¶ Priority 3 - Alternative Options
           </div>
           <div class="tier-content" id="tier3Content">
             <!-- Tier 3 lenders will be populated here -->
@@ -602,7 +602,7 @@
 
         <div id="tier4Section" class="tier-section tier-4">
           <div class="tier-header">
-            🚨 Last Resort Option
+            ðŸš¨ Last Resort Option
           </div>
           <div class="tier-content" id="tier4Content">
             <!-- Tier 4 lenders will be populated here -->
@@ -622,10 +622,10 @@
 
         <div class="submission-actions">
           <button id="submitToSelected" class="action-btn primary-btn" disabled>
-            📧 Open Selected Lender Emails
+            ðŸ“§ Open Selected Lender Emails
           </button>
           <button id="submitToAll" class="action-btn secondary-btn" disabled>
-            📧 Open ALL Approved Lender Emails
+            ðŸ“§ Open ALL Approved Lender Emails
           </button>
         </div>
       </div>
@@ -960,14 +960,14 @@
 Please find attached the complete business loan application for ${clientName}.
 
 Application Details:
-• Client Name: ${clientName}
-• Submission Type: ${lender.type.toUpperCase()}
-• Lender: ${lender.name}
+â€¢ Client Name: ${clientName}
+â€¢ Submission Type: ${lender.type.toUpperCase()}
+â€¢ Lender: ${lender.name}
 
 PLEASE ATTACH THE FOLLOWING DOCUMENTS:
-• Business Application (PDF)
-• Bank Statements - Last 4 months (PDF)
-• Any additional supporting documents
+â€¢ Business Application (PDF)
+â€¢ Bank Statements - Last 4 months (PDF)
+â€¢ Any additional supporting documents
 
 Please review the application and let us know if you need any additional information.
 
@@ -989,7 +989,7 @@ Flexibility Capital Team`;
       try {
         const mailtoUrl = generateMailtoUrl(lender, clientName);
         
-        console.log(`📧 Opening Outlook for: ${lender.name}`);
+        console.log(`ðŸ“§ Opening Outlook for: ${lender.name}`);
         console.log(`TO: ${lender.contact}`);
         console.log(`CC: ${lender.ccEmails.join(', ')}`);
         console.log('---');
@@ -999,7 +999,7 @@ Flexibility Capital Team`;
         
         return { success: true };
       } catch (error) {
-        console.error(`❌ Failed to open email for ${lender.name}:`, error);
+        console.error(`âŒ Failed to open email for ${lender.name}:`, error);
         return { success: false, error: error.message };
       }
     }
@@ -1018,14 +1018,14 @@ Portal Instructions:
 ${lender.contact}
 
 Client Details:
-• Client Name: ${clientName}
-• Lender: ${lender.name}
-• Submission Type: Portal
+â€¢ Client Name: ${clientName}
+â€¢ Lender: ${lender.name}
+â€¢ Submission Type: Portal
 
 DOCUMENTS TO UPLOAD TO PORTAL:
-• Business Application (PDF)
-• Bank Statements - Last 4 months (PDF)
-• Any additional supporting documents
+â€¢ Business Application (PDF)
+â€¢ Bank Statements - Last 4 months (PDF)
+â€¢ Any additional supporting documents
 
 The client documents are ready for manual portal submission.
 
@@ -1047,7 +1047,7 @@ Peapod Calculator System`;
       try {
         const mailtoUrl = generatePortalMailtoUrl(lender, clientName);
         
-        console.log(`📋 Opening internal email for portal: ${lender.name}`);
+        console.log(`ðŸ“‹ Opening internal email for portal: ${lender.name}`);
         console.log(`Instructions: ${lender.contact}`);
         console.log('---');
         
@@ -1056,7 +1056,7 @@ Peapod Calculator System`;
         
         return { success: true };
       } catch (error) {
-        console.error(`❌ Failed to open portal email for ${lender.name}:`, error);
+        console.error(`âŒ Failed to open portal email for ${lender.name}:`, error);
         return { success: false, error: error.message };
       }
     }
@@ -1070,7 +1070,7 @@ Peapod Calculator System`;
         return false;
       }
       
-      console.log('📧 OUTLOOK MODE - Opening email drafts...');
+      console.log('ðŸ“§ OUTLOOK MODE - Opening email drafts...');
 
       const statusList = document.getElementById('statusList');
       statusList.innerHTML = '';
@@ -1101,7 +1101,7 @@ Peapod Calculator System`;
         // Update status
         const statusBadge = statusItem.querySelector('.status-badge');
         if (result.success) {
-          statusBadge.textContent = 'OPENED ✓';
+          statusBadge.textContent = 'OPENED âœ“';
           statusBadge.className = 'status-badge status-sent';
           successCount++;
         } else {
@@ -1115,12 +1115,12 @@ Peapod Calculator System`;
       }
 
       // Show summary
-      console.log(`📧 Email Opening Complete: ${successCount} opened, ${failCount} failed`);
+      console.log(`ðŸ“§ Email Opening Complete: ${successCount} opened, ${failCount} failed`);
       
       if (failCount > 0) {
         alert(`Email opening completed with ${failCount} failures. Check console for details.`);
       } else {
-        alert(`📧 Successfully opened ${successCount} Outlook email drafts!\n\nPlease review and attach your documents before sending each email.`);
+        alert(`ðŸ“§ Successfully opened ${successCount} Outlook email drafts!\n\nPlease review and attach your documents before sending each email.`);
       }
 
       return true;
@@ -1353,11 +1353,11 @@ Peapod Calculator System`;
       const submitAll = document.getElementById('submitToAll');
       if (submitSelected) {
         submitSelected.disabled = true;
-        submitSelected.textContent = '📧 Open Selected Lender Emails';
+        submitSelected.textContent = 'ðŸ“§ Open Selected Lender Emails';
       }
       if (submitAll) {
         submitAll.disabled = true;
-        submitAll.textContent = '📧 Open ALL Approved Lender Emails';
+        submitAll.textContent = 'ðŸ“§ Open ALL Approved Lender Emails';
       }
       
       // Reset auto-escalation checkbox
@@ -1369,7 +1369,7 @@ Peapod Calculator System`;
       } catch(e) {
         // Silently fail if console.clear is not supported
       }
-      console.log('🔄 Calculator Reset - Ready for new application');
+      console.log('ðŸ”„ Calculator Reset - Ready for new application');
     }
 
     // Form submission handler
@@ -1474,10 +1474,10 @@ Peapod Calculator System`;
           }
         }
         
-        this.textContent = '✓ Emails Opened';
+        this.textContent = 'âœ“ Emails Opened';
       } else {
         this.disabled = false;
-        this.textContent = '📧 Open Selected Lender Emails';
+        this.textContent = 'ðŸ“§ Open Selected Lender Emails';
       }
     });
 
@@ -1489,11 +1489,11 @@ Peapod Calculator System`;
       const success = await submitToLenders(activeLenders);
       
       if (success) {
-        this.textContent = '✓ All Emails Opened';
+        this.textContent = 'âœ“ All Emails Opened';
         document.getElementById('submitToSelected').disabled = true;
       } else {
         this.disabled = false;
-        this.textContent = '📧 Open ALL Approved Lender Emails';
+        this.textContent = 'ðŸ“§ Open ALL Approved Lender Emails';
       }
     });
 
@@ -1501,7 +1501,7 @@ Peapod Calculator System`;
     document.addEventListener('DOMContentLoaded', function() {
       initializeDropdowns();
       
-      console.log('✅ Calculator initialized with Outlook integration');
+      console.log('âœ… Calculator initialized with Outlook integration');
       
       // Reset button handler
       document.getElementById('resetCalculator').addEventListener('click', function() {
