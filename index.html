@@ -86,7 +86,7 @@
     }
 
     .form-container h2::before {
-      content: "";
+      content: "📋";
       font-size: 1.5rem;
     }
 
@@ -169,7 +169,7 @@
     }
 
     .results-container h2::before {
-      content: "";
+      content: "🦊";
       font-size: 1.5rem;
     }
 
@@ -425,7 +425,7 @@
     }
 
     .empty-state::before {
-      content: "";
+      content: "🏢";
       display: block;
       font-size: 3rem;
       margin-bottom: 15px;
@@ -482,7 +482,7 @@
       <h1>Enhanced Peapod Calculator</h1>
       <p>Advanced Business Lending Qualification & Submission Tool</p>
       <p style="margin-top: 10px; padding: 10px; background: rgba(107, 142, 35, 0.1); border-radius: 8px; font-size: 0.9rem;">
-         <strong>Outlook Integration:</strong> This tool will open pre-populated emails in your Outlook client with contact information, CC recipients, and email templates. You'll need to manually attach your documents before sending.
+        📧 <strong>Outlook Integration:</strong> This tool will open pre-populated emails in your Outlook client with contact information, CC recipients, and email templates. You'll need to manually attach your documents before sending.
       </p>
       <span class="version-badge">v2.0</span>
     </div>
@@ -538,7 +538,7 @@
 
         <button type="submit" class="submit-btn">Find Qualifying Lenders</button>
         <button type="button" id="resetCalculator" class="submit-btn" style="background: linear-gradient(135deg, #dc3545, #c82333); margin-top: 10px; display: none;">
-           Reset Calculator
+          🔄 Reset Calculator
         </button>
       </form>
 
@@ -566,7 +566,7 @@
       <!-- Lender Selection Section -->
       <div id="lenderSelection" class="lender-selection-section">
         <div class="selection-summary">
-          <h3> Select Lenders for Submission</h3>
+          <h3>🤝 Select Lenders for Submission</h3>
           <p>Lenders are organized by priority. Select which approved lenders to submit documents to.</p>
           <div style="margin-top: 10px;">
             <strong>Selected: <span id="selectedCount">0</span> lenders</strong>
@@ -575,7 +575,7 @@
 
         <div id="tier1Section" class="tier-section tier-1">
           <div class="tier-header">
-             Priority 1 - Best Options (Recommended first)
+            🎯 Priority 1 - Best Options (Recommended first)
           </div>
           <div class="tier-content" id="tier1Content">
             <!-- Tier 1 lenders will be populated here -->
@@ -584,7 +584,7 @@
 
         <div id="tier2Section" class="tier-section tier-2">
           <div class="tier-header">
-             Priority 2 - Solid Backup Options
+            ⚡ Priority 2 - Solid Backup Options
           </div>
           <div class="tier-content" id="tier2Content">
             <!-- Tier 2 lenders will be populated here -->
@@ -593,7 +593,7 @@
 
         <div id="tier3Section" class="tier-section tier-3">
           <div class="tier-header">
-             Priority 3 - Alternative Options
+            🔶 Priority 3 - Alternative Options
           </div>
           <div class="tier-content" id="tier3Content">
             <!-- Tier 3 lenders will be populated here -->
@@ -602,7 +602,7 @@
 
         <div id="tier4Section" class="tier-section tier-4">
           <div class="tier-header">
-             Last Resort Option
+            🚨 Last Resort Option
           </div>
           <div class="tier-content" id="tier4Content">
             <!-- Tier 4 lenders will be populated here -->
@@ -610,7 +610,7 @@
         </div>
 
         <div class="auto-escalation-controls">
-          <h4> Auto-Escalation Settings</h4>
+          <h4>⏰ Auto-Escalation Settings</h4>
           <div class="checkbox-group">
             <input type="checkbox" id="autoEscalation" checked>
             <label for="autoEscalation">Automatically send to remaining approved lenders after 3 hours</label>
@@ -622,17 +622,17 @@
 
         <div class="submission-actions">
           <button id="submitToSelected" class="action-btn primary-btn" disabled>
-             Open Selected Lender Emails
+            📧 Open Selected Lender Emails
           </button>
           <button id="submitToAll" class="action-btn secondary-btn" disabled>
-             Open ALL Approved Lender Emails
+            📧 Open ALL Approved Lender Emails
           </button>
         </div>
       </div>
 
       <!-- Submission Status -->
       <div id="submissionStatus" class="submission-status">
-        <h3> Submission Status</h3>
+        <h3>📊 Submission Status</h3>
         <div id="statusList">
           <!-- Status items will be populated here -->
         </div>
@@ -974,14 +974,12 @@ Please review the application and let us know if you need any additional informa
 Best regards,
 Flexibility Capital Team`;
 
-      // Encode parameters for mailto URL
-      const params = new URLSearchParams({
-        subject: subject,
-        cc: ccEmails.join(';'),
-        body: emailBody
-      });
+      // Manually encode parameters for mailto URL to avoid + signs
+      const encodedSubject = encodeURIComponent(subject);
+      const encodedCc = encodeURIComponent(ccEmails.join(';'));
+      const encodedBody = encodeURIComponent(emailBody);
       
-      return `mailto:${toEmail}?${params.toString()}`;
+      return `mailto:${toEmail}?subject=${encodedSubject}&cc=${encodedCc}&body=${encodedBody}`;
     }
 
     // Open Outlook with pre-populated email
@@ -1032,14 +1030,12 @@ The client documents are ready for manual portal submission.
 Best regards,
 Peapod Calculator System`;
 
-      // Encode parameters for mailto URL
-      const params = new URLSearchParams({
-        subject: subject,
-        cc: ccEmails.join(';'),
-        body: emailBody
-      });
+      // Manually encode parameters for mailto URL to avoid + signs
+      const encodedSubject = encodeURIComponent(subject);
+      const encodedCc = encodeURIComponent(ccEmails.join(';'));
+      const encodedBody = encodeURIComponent(emailBody);
       
-      return `mailto:${toEmail}?${params.toString()}`;
+      return `mailto:${toEmail}?subject=${encodedSubject}&cc=${encodedCc}&body=${encodedBody}`;
     }
 
     // Open internal email for portal submission
