@@ -584,7 +584,7 @@
 
         <div id="tier2Section" class="tier-section tier-2">
           <div class="tier-header">
-             Priority 2 - Solid Backup Options
+            âš¡ Priority 2 - Solid Backup Options
           </div>
           <div class="tier-content" id="tier2Content">
             <!-- Tier 2 lenders will be populated here -->
@@ -610,7 +610,7 @@
         </div>
 
         <div class="auto-escalation-controls">
-          <h4> Auto-Escalation Settings</h4>
+          <h4>â° Auto-Escalation Settings</h4>
           <div class="checkbox-group">
             <input type="checkbox" id="autoEscalation" checked>
             <label for="autoEscalation">Automatically send to remaining approved lenders after 3 hours</label>
@@ -632,7 +632,7 @@
 
       <!-- Submission Status -->
       <div id="submissionStatus" class="submission-status">
-        <h3> Submission Status</h3>
+        <h3>ðŸ“Š Submission Status</h3>
         <div id="statusList">
           <!-- Status items will be populated here -->
         </div>
@@ -960,14 +960,14 @@
 Please find attached the complete business loan application for ${clientName}.
 
 Application Details:
-â€¢ Client Name: ${clientName}
-â€¢ Submission Type: ${lender.type.toUpperCase()}
-â€¢ Lender: ${lender.name}
+ðŸ”¹ Client Name: ${clientName}
+ðŸ”¹ Submission Type: ${lender.type.toUpperCase()}
+ðŸ”¹ Lender: ${lender.name}
 
 PLEASE ATTACH THE FOLLOWING DOCUMENTS:
-â€¢ Business Application (PDF)
-â€¢ Bank Statements - Last 4 months (PDF)
-â€¢ Any additional supporting documents
+ðŸ“Ž Business Application (PDF)
+ðŸ“Ž Bank Statements - Last 4 months (PDF)
+ðŸ“Ž Any additional supporting documents
 
 Please review the application and let us know if you need any additional information.
 
@@ -1018,14 +1018,14 @@ Portal Instructions:
 ${lender.contact}
 
 Client Details:
-â€¢ Client Name: ${clientName}
-â€¢ Lender: ${lender.name}
-â€¢ Submission Type: Portal
+ðŸ”¹ Client Name: ${clientName}
+ðŸ”¹ Lender: ${lender.name}
+ðŸ”¹ Submission Type: Portal
 
 DOCUMENTS TO UPLOAD TO PORTAL:
-â€¢ Business Application (PDF)
-â€¢ Bank Statements - Last 4 months (PDF)
-â€¢ Any additional supporting documents
+ðŸ“Ž Business Application (PDF)
+ðŸ“Ž Bank Statements - Last 4 months (PDF)
+ðŸ“Ž Any additional supporting documents
 
 The client documents are ready for manual portal submission.
 
@@ -1101,7 +1101,7 @@ Peapod Calculator System`;
         // Update status
         const statusBadge = statusItem.querySelector('.status-badge');
         if (result.success) {
-          statusBadge.textContent = 'OPENED âœ“';
+          statusBadge.textContent = 'OPENED âœ…';
           statusBadge.className = 'status-badge status-sent';
           successCount++;
         } else {
@@ -1474,7 +1474,7 @@ Peapod Calculator System`;
           }
         }
         
-        this.textContent = 'âœ“ Emails Opened';
+                    this.textContent = 'âœ… Emails Opened';
       } else {
         this.disabled = false;
         this.textContent = 'ðŸ“§ Open Selected Lender Emails';
@@ -1489,7 +1489,7 @@ Peapod Calculator System`;
       const success = await submitToLenders(activeLenders);
       
       if (success) {
-        this.textContent = 'âœ“ All Emails Opened';
+                    this.textContent = 'âœ… All Emails Opened';
         document.getElementById('submitToSelected').disabled = true;
       } else {
         this.disabled = false;
