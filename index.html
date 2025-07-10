@@ -950,7 +950,7 @@
       const ccEmails = [...lender.ccEmails];
       
       // Add internal CC emails (default internal CC for all lenders)
-      const internalCcEmails = lender.internalCcEmails || ["jmckevitt@flexibilitycapital.com"];
+      const internalCcEmails = lender.internalCcEmails || [];
       ccEmails.push(...internalCcEmails);
       
       const subject = `New Business Application - ${clientName}`;
